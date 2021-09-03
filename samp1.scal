@@ -1,0 +1,102 @@
+// Databricks notebook source
+val df = sqlContext.read.format("com.databricks.spark.csv").option("header","true").option("inferSchema","true").load("dbfs:/FileStore/shared_uploads/sinha.ashish.4.u@gmail.com/bankmarketingdata-3.csv")
+df.show()
+
+// COMMAND ----------
+
+val bankDF = df.toDF()
+
+// COMMAND ----------
+
+bankDF.createOrReplaceTempView("bank")
+
+// COMMAND ----------
+
+val success = sqlContext.sql("select (a.subscribed/b.total)*100 as success_percent from (select count(*) as subscribed from bank where y='yes') a,(select count(*) as total from bank) b").show()
+
+// COMMAND ----------
+
+val failure = sqlContext.sql("select (a.not_subscribed/b.total)*100 as failure_percent from (select count(*) as not_subscribed from bank where y='no') a,(select count(*) as total from bank) b").show()
+
+// COMMAND ----------
+
+bankDF.select(max($"age")).show()
+
+
+// COMMAND ----------
+
+bankDF.select(min($"age")).show()
+
+
+// COMMAND ----------
+
+bankDF.select(avg($"age")).show()
+
+// COMMAND ----------
+
+bankDF.select(avg($"balance")).show()
+
+// COMMAND ----------
+
+val median = sqlContext.sql("SELECT percentile_approx(balance, 0.5) FROM bank").show()
+
+// COMMAND ----------
+
+val age = sqlContext.sql("select age, count(*) as number from bank where y='yes' group by age order by number desc ").show()
+
+// COMMAND ----------
+
+val marital = sqlContext.sql("select marital, count(*) as number from bank where y='yes' group by marital order by number desc ").show()
+
+// COMMAND ----------
+
+val age_marital = sqlContext.sql("select age, marital, count(*) as number from bank where y='yes' group by age,marital order by number desc ").show()
+
+
+// COMMAND ----------
+
+import scala.reflect.runtime.universe
+import org.apache.spark.SparkConf
+import org.apache.spark.SparkContext
+import org.apache.spark.sql.DataFrame
+import org.apache.spark.sql.SQLContext
+import org.apache.spark.sql.functions.mean
+import org.apache.spark.ml.feature.StringIndexer
+
+// COMMAND ----------
+
+val ageRDD = sqlContext.udf.register("ageRDD",(age:Int) => {
+if (age < 20)
+"Teen"
+else if (age > 20 && age <= 32)
+"Young"
+else if (age > 33 && age <= 55)
+"Middle Aged"
+else
+"Old"
+})
+
+// COMMAND ----------
+
+val banknewDF = bankDF.withColumn("age",ageRDD(bankDF("age")))
+banknewDF.createOrReplaceTempView("bank_new")
+
+// COMMAND ----------
+
+val age_target = sqlContext.sql("select age, count(*) as number from bank_new where y='yes' group by age order by number desc ").show()
+
+// COMMAND ----------
+
+val ageInd = new StringIndexer().setInputCol("age").setOutputCol("ageIndex")
+
+// COMMAND ----------
+
+var strIndModel = ageInd.fit(banknewDF)
+
+// COMMAND ----------
+
+strIndModel.transform(banknewDF).select("age","ageIndex").show(5)
+
+// COMMAND ----------
+
+
