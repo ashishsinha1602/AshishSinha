@@ -1,0 +1,480 @@
+<div class="admin-wrap">
+    <!-- <div class="student-profile">
+        <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    <button class="btn btn-toggle">
+                        <img src="assets/images/toggle-icon.png" alt="">
+                    </button>
+                </div>
+                <div class="col-6">
+                    <div class="class-icon">
+                        <button class="btn btn-class">
+                            <img src="assets/images/class-icon.png" alt="">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="cover-photo">
+                    <div class="edit-prifile">
+                        <a routerLink="/student/edit-student-profile">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                    </div>
+                    <div class="profile-wrap">
+                        <div class="profile-pic">
+                            <!-- <img src="assets/images/counselor2.jpg" alt=""> -->
+                            <!-- <img src="assets/images/counselor2.jpg" alt="" *ngIf="image == ''">
+                            <img src="{{image_path}}{{image}}" alt="" *ngIf="image != ''"> -->
+                            <img src="{{image}}" alt="">
+                        </div>
+                        <div class="profile-text">
+                            <h3>{{name}}</h3>
+                            <h5>{{city}}, {{state}}, {{zip_code}}</h5>
+                            <div class="profile-info">
+                                <ul>
+                                    <li>
+                                        <p><span>Phone :</span> {{phone}}</p>
+                                        <div class="verify-icon">
+                                            <img src="assets/images/verify-icon.png" alt="">
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <p><span>Email :</span> {{email}}</p>
+                                        <div class="verify-icon">
+                                            <img src="assets/images/verify-icon.png" alt="">
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <p><span>Profession : </span> Student</p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- <div class="profile-info">
+                                <ul>
+                                    <li>
+                                        <p><span>Registered since : </span> 12-06-2018</p>
+                                    </li>
+                                    <li>
+                                        <p><span>Qualification : </span> Graduate</p>
+                                    </li>
+                                </ul>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="profile-all-info">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-8 mb-4">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="upload-card card p-3 mt-3">
+                                <h5 class="profile-heading">Running Courses <a href="#">View All</a></h5>
+                                <div class="running-course-status">
+                                    <ul>
+                                        <li>
+                                            <div class="pie-wrapper progress-45 style-1">
+                                                <span class="label">45<span class="smaller">%</span></span>
+                                                <div class="pie">
+                                                    <div class="left-side half-circle"></div>
+                                                    <div class="right-side half-circle"></div>
+                                                </div>
+                                                <div class="shadow"></div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <p class="chart-name">
+                                                The Web Developer
+                                                Bootcamp 2021
+                                            </p>
+                                            <p class="date-time">
+                                                22-06-2021 | 10:00 AM
+                                            </p>
+                                        </li>
+                                        <li>
+                                            <div class="pie-wrapper progress-45 style-1">
+                                                <span class="label">45<span class="smaller">%</span></span>
+                                                <div class="pie">
+                                                    <div class="left-side half-circle"></div>
+                                                    <div class="right-side half-circle"></div>
+                                                </div>
+                                                <div class="shadow"></div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <p class="chart-name">
+                                                Angular - The Complete
+                                                Guide (2021 Edition)
+                                            </p>
+                                            <p class="date-time">
+                                                22-06-2021 | 10:00 AM
+                                            </p>
+                                        </li>
+                                        <li>
+                                            <div class="pie-wrapper progress-45 style-1">
+                                                <span class="label">45<span class="smaller">%</span></span>
+                                                <div class="pie">
+                                                    <div class="left-side half-circle"></div>
+                                                    <div class="right-side half-circle"></div>
+                                                </div>
+                                                <div class="shadow"></div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <p class="chart-name">
+                                                The Complete JavaScript
+                                                Course 2021
+                                            </p>
+                                            <p class="date-time">
+                                                22-06-2021 | 10:00 AM
+                                            </p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="profile-heading mt-4 mb-0">Past counseling sessions <a href="#">View All</a></h5>
+                            <div class="upload-card student-table card mt-2">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Session</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tr>
+                                        <td>
+                                            Counseling sessions 1
+                                        </td>
+                                        <td>
+                                            12-06-2020
+                                        </td>
+                                        <td>
+                                            12-06-2020
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Counseling sessions 1
+                                        </td>
+                                        <td>
+                                            12-06-2020
+                                        </td>
+                                        <td>
+                                            12-06-2020
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Counseling sessions 1
+                                        </td>
+                                        <td>
+                                            12-06-2020
+                                        </td>
+                                        <td>
+                                            12-06-2020
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Counseling sessions 1
+                                        </td>
+                                        <td>
+                                            12-06-2020
+                                        </td>
+                                        <td>
+                                            12-06-2020
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="profile-heading mt-4 mb-0">Past courses <a href="#">View All</a></h5>
+                            <div class="upload-card student-table card mt-2">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Course</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tr>
+                                        <td>
+                                            Data Engineer
+                                        </td>
+                                        <td>
+                                            12-06-2020
+                                        </td>
+                                        <td>
+                                            12-06-2020
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Data Engineer
+                                        </td>
+                                        <td>
+                                            12-06-2020
+                                        </td>
+                                        <td>
+                                            12-06-2020
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Data Engineer
+                                        </td>
+                                        <td>
+                                            12-06-2020
+                                        </td>
+                                        <td>
+                                            12-06-2020
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Data Engineer
+                                        </td>
+                                        <td>
+                                            12-06-2020
+                                        </td>
+                                        <td>
+                                            12-06-2020
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="upload-card card p-3 mt-3">
+                                <h5 class="profile-heading">Certificates <a href="#">View All</a></h5>
+                                <table class="table">
+                                    <tr>
+                                        <td>
+                                            Data Engineer<br>
+                                            <small>Issued on 16-06-2021</small>
+                                        </td>
+                                        <td>
+                                            <span class="text-danger">
+                                                <i class="fas fa-file-pdf fa-2x"></i>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            Data Engineer<br>
+                                            <small>Issued on 16-06-2021</small>
+                                        </td>
+                                        <td>
+                                            <span class="text-danger">
+                                                <i class="fas fa-file-pdf fa-2x"></i>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Data Engineer<br>
+                                            <small>Issued on 16-06-2021</small>
+                                        </td>
+                                        <td>
+                                            <span class="text-danger">
+                                                <i class="fas fa-file-pdf fa-2x"></i>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            Data Engineer<br>
+                                            <small>Issued on 16-06-2021</small>
+                                        </td>
+                                        <td>
+                                            <span class="text-danger">
+                                                <i class="fas fa-file-pdf fa-2x"></i>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="upload-card student-table card p-3 mt-3">
+                                <h5 class="profile-heading">Notifications <a routerLink="/notifications">View All</a></h5>
+                                <div class="notification-list">
+                                    <ul>
+                                        <li>
+                                            <div class="noti-img">
+                                                <img src="assets/images/teacher1.jpg" alt="">
+                                            </div>
+                                            <div class="noti-txt">
+                                                <h6>John Doe <span>| 2-06-2021</span></h6>
+                                                <p>
+                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                                    tempor
+                                                </p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="noti-img">
+                                                <img src="assets/images/teacher1.jpg" alt="">
+                                            </div>
+                                            <div class="noti-txt">
+                                                <h6>John Doe <span>| 2-06-2021</span></h6>
+                                                <p>
+                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                                    tempor
+                                                </p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="noti-img">
+                                                <img src="assets/images/teacher1.jpg" alt="">
+                                            </div>
+                                            <div class="noti-txt">
+                                                <h6>John Doe <span>| 2-06-2021</span></h6>
+                                                <p>
+                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                                    tempor
+                                                </p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="noti-img">
+                                                <img src="assets/images/teacher1.jpg" alt="">
+                                            </div>
+                                            <div class="noti-txt">
+                                                <h6>John Doe <span>| 2-06-2021</span></h6>
+                                                <p>
+                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                                    tempor
+                                                </p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="noti-img">
+                                                <img src="assets/images/teacher1.jpg" alt="">
+                                            </div>
+                                            <div class="noti-txt">
+                                                <h6>John Doe <span>| 2-06-2021</span></h6>
+                                                <p>
+                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                                    tempor
+                                                </p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <h5 class="profile-heading mt-4 mb-0">Resources <a href="#">View All</a></h5>
+                            <div class="upload-card student-table card mt-2">
+                                <table class="table">
+                                    <tr>
+                                        <td>
+                                            2021 Complete Public
+                                            Speaking Masterclass For
+                                            Every Occasion
+                                        </td>
+                                        <td>
+                                            <span class="text-danger d-flex">
+                                                <i class="fas fa-file-pdf fa-2x"></i>
+                                                <small class="ml-2">Abcd.pdf</small>
+                                            </span><br>
+                                            <span class="text-danger d-flex">
+                                                <i class="fas fa-file-pdf fa-2x"></i>
+                                                <small class="ml-2">Abcd.pdf</small>
+                                            </span><br>
+                                            <span class="text-danger d-flex">
+                                                <i class="fas fa-file-pdf fa-2x"></i>
+                                                <small class="ml-2">Abcd.pdf</small>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            2021 Complete Public
+                                            Speaking Masterclass For
+                                            Every Occasion
+                                        </td>
+                                        <td>
+                                            <span class="text-danger d-flex">
+                                                <i class="fas fa-file-pdf fa-2x"></i>
+                                                <small class="ml-2">Abcd.pdf</small>
+                                            </span><br>
+                                            <span class="text-danger d-flex">
+                                                <i class="fas fa-file-pdf fa-2x"></i>
+                                                <small class="ml-2">Abcd.pdf</small>
+                                            </span><br>
+                                            <span class="text-danger d-flex">
+                                                <i class="fas fa-file-pdf fa-2x"></i>
+                                                <small class="ml-2">Abcd.pdf</small>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 mb-4">
+                    <h5 class="main-heading text-center mt-3">Other courses that might interest you</h5>
+                    <div class="profile-course-list">
+                        <ul>
+                            <li *ngFor="let course of courses">
+                                <a routerLink="/course-details">
+                                    <div class="course-box">
+                                        <div class="course-img">
+                                            <img src="{{ course.img }}" alt="">
+                                        </div>
+                                        <div class="course-content">
+                                            <h5 class="course-name">{{course.name}}</h5>
+                                            <div class="rating">
+                                                <img src="assets/images/rating-4.png" alt="" width="87" height="15">
+                                                <h6 class="rating-total">4.6 (1234)</h6>
+                                            </div>
+                                            <h5 class="course-level">{{course.difficulty}}</h5>
+                                            <h3 class="estimate-time">Estimated Time
+                                                <span>5 months at 5-10 hrs/week</span>
+                                            </h3>
+                                            <h2 class="course-price">₹455</h2>
+                                        </div>
+                                        <div class="created-by">
+                                            <div class="creator-img">
+                                                <img src="assets/images/avatar-small.jpg" alt="">
+                                            </div>
+                                            <div class="creator-name">
+                                                <h4>
+                                                    Created by
+                                                    <span>John Doe</span>
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="chat">
+    <button class="btn p-0">
+        <img src="assets/images/chat-icon.png" alt="">
+    </button>
+</div>

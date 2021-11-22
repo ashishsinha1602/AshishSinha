@@ -1,0 +1,194 @@
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="application-step">
+                <h3>Teaching information</h3>
+                <div class="step-form">
+                    <ul>
+                        <li class="active past">
+                            <span>Step 1</span>
+                        </li>
+                        <li class="active past">
+                            <span>Step 2</span>
+                        </li>
+                        <li class="active">
+                            <!-- past -->
+                            <span>Step 3</span>
+                        </li>
+                    </ul>
+                </div>
+                <form [formGroup]="step3_form" (ngSubmit)="SubmitStep3()">
+                    <h5 class="mt-5 mb-3">Teaching Experience</h5>
+                    <div *ngFor="let edu_details of t.controls; let i = index">
+                        <div [formGroup]="edu_details">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Teaching Experience"
+                                    formControlName="experience">
+                            </div> &nbsp;&nbsp;
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="University/College"
+                                    formControlName="college_name">
+                            </div>
+                            <div class="form-row relative">
+                                <div class="col-md-3">
+                                    <h5 class="mt-3">Time Period</h5>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <select class="form-control" formControlName="duration_from"
+                                            (change)="Educational_Qualification(edu_details, i)">
+                                            <option value="" disabled>From</option>
+                                            <option *ngFor="let yr of year_array">{{yr}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                    <h5 class="mt-3">To</h5>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <select class="form-control" formControlName="duration_to">
+                                            <option value="" disabled>To</option>
+                                            <option *ngFor="let yr of year_array"
+                                                [disabled]="yr < this.step3_form.value.edu_details[i].duration_from || this.step3_form.value.edu_details[i].duration_from == ''">
+                                                {{yr}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <a class="remove-icon" *ngIf="t.length > 1" (click)="delete_experience_details(i+1)"><i
+                                        class="fa fa-remove"></i></a>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-link p-0" (click)="AddExperienceDetails()">
+                            <i class="fas fa-plus-circle"></i> Add More Experience
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <h5 class="mt-3 text-left">Select your competency areas</h5>
+                        <ng-multiselect-dropdown [clearable]="true" [placeholder]="'custom placeholder'"
+                            [settings]="dropdownSettings" [data]="competency_array" [(ngModel)]="competency"
+                            formControlName="competency" (onSelect)="onItemSelect($event)"
+                            (onSelectAll)="onSelectAll($event)" [disabled]=max_value>
+                        </ng-multiselect-dropdown>
+
+                    </div>
+                    <div class="form-group upload-card card p-3">
+                        <h5 class="mt-1 mb-3 text-left">Upload Resume</h5>
+                        <div class="upload-wrap">
+                            <div class="upload">
+                                <input type="file" class="btn-upload" (change)="ResumeUpload($event)">
+                                <button class="btn btn-outline-warning">Upload</button>
+                            </div>
+                            <div class="uploaded-file">
+                                <ul>
+                                    <li>
+                                        <!-- <i class="fas fa-file-pdf"></i> -->
+                                        <p>{{resume_uploded_msg}}</p>
+                                        <!-- <button class="btn btn-sm cross">
+                                            <i class="far fa-times-circle"></i>
+                                        </button> -->
+                                    </li>
+                                    <!-- <li>
+                                        <i class="fas fa-image"></i>
+                                        <p>abcd.jpeg</p>
+                                        <button class="btn btn-sm cross">
+                                            <i class="far fa-times-circle"></i>
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <i class="fas fa-image"></i>
+                                        <p>abcd.jpeg</p>
+                                        <button class="btn btn-sm cross">
+                                            <i class="far fa-times-circle"></i>
+                                        </button>
+                                    </li> -->
+                                </ul>
+                            </div>
+                        </div>
+                        <p class="text-muted mt-3 mb-0">Allowed Type : Excel, PPT, PDF, JPEG
+                            5 MB Limit</p>
+                    </div>
+                    <div class="form-group upload-card card p-3">
+                        <h5 class="mt-1 mb-3 text-left">Upload Profile image</h5>
+                        <div class="upload-wrap">
+                            <div class="upload">
+                                <input type="file" class="btn-upload" (change)="ProfileUpload($event)">
+                                <button class="btn btn-outline-warning">Upload</button>
+                            </div>
+                            <div class="uploaded-file">
+                                <ul>
+                                    <li>
+                                        <!-- <i class="fas fa-image"></i> -->
+                                        <p>{{profile_uploded_msg}}</p>
+                                        <!-- <button class="btn btn-sm cross">
+                                            <i class="far fa-times-circle"></i>
+                                        </button> -->
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <p class="text-muted mt-3 mb-0">Allowed Type :JPEG, PNG
+                            5 MB Limit</p>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
+                                value="aadhar_card" formControlName="identification_card" name="identification_card"
+                                (click)="IdentificationText('Aadhar card')">
+                            <label class="form-check-label" for="inlineRadio1">Aadhar&nbsp;card</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
+                                value="pan_card" formControlName="identification_card" name="identification_card"
+                                (click)="IdentificationText('PAN card')">
+                            <label class="form-check-label" for="inlineRadio2">PAN card</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3"
+                                value="passport" formControlName="identification_card" name="identification_card"
+                                (click)="IdentificationText('Passport')">
+                            <label class="form-check-label" for="inlineRadio3">Passport</label>
+                        </div>
+                    </div>
+                    <div class="form-group upload-card card p-3">
+                        <h5 class="mt-1 mb-3 text-left" *ngIf="identification_text != ''">Upload {{identification_text}}
+                        </h5>
+                        <div class="upload-wrap">
+                            <div class="upload">
+                                <input type="file" class="btn-upload" (change)="IdUpload($event)">
+                                <button class="btn btn-outline-warning">Upload</button>
+                            </div>
+                            <div class="uploaded-file">
+                                <ul>
+                                    <li>
+                                        <!-- <i class="fas fa-file-pdf"></i> -->
+                                        <p>{{id_uploded_msg}}</p>
+                                        <!-- <button class="btn btn-sm cross">
+                                            <i class="far fa-times-circle"></i>
+                                        </button> -->
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <p class="text-muted mt-3 mb-0">Allowed Type : Excel, PPT, PDF, JPEG
+                            5 MB Limit</p>
+                    </div>
+                    <div class="form-group upload-card card p-3">
+                        <h5 class="mt-1 mb-3 text-left">Search Keyword</h5>
+                        <textarea class="form-control" formControlName="search" rows="3"
+                            placeholder="Search keyword should be , seperated"></textarea>
+                    </div>
+                    <div class="appli-btn">
+                        <button class="btn btn-outline-primary" routerLink="/teacher/application-step2">Back</button>
+                        <button class="btn btn-primary" [disabled]="!this.step3_form.valid">Continue</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ngx-spinner></ngx-spinner>

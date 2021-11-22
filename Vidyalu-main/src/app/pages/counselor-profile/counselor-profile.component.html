@@ -1,0 +1,224 @@
+<div class="admin-wrap">
+<!-- <div class="student-profile">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-6">
+                <button class="btn btn-toggle">
+                    <img src="assets/images/toggle-icon.png" alt="">
+                </button>
+            </div>
+            <div class="col-6">
+                <div class="class-icon">
+                    <button class="btn btn-class mr-2">
+                        <img src="assets/images/note-icon.png" alt="">
+                    </button>
+                    <button class="btn btn-class">
+                        <img src="assets/images/graduate-icon.png" alt="">
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="cover-photo">
+                <div class="edit-prifile">
+                    <a routerLink="/counsellor/edit-counsellor-profile">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </div>
+                <div class="profile-wrap">
+                    <div class="profile-pic">
+                        <!-- <img src="assets/images/counselor1.jpg" alt=""> -->
+                        <!-- <img src="assets/images/counselor1.jpg" alt="" *ngIf="image == ''">
+                        <img src="{{image_path}}{{image}}" alt="" *ngIf="image != ''"> -->
+                        <img src="{{image}}" alt="">
+                    </div>
+                    <div class="profile-text">
+                        <h3>{{name}}</h3>
+                        <h5>{{city}}, {{state}}, {{zip_code}}</h5>
+                        <!-- <div class="rating">
+                            <img src="assets/images/rating-4.png" alt="" width="87" height="15">
+                            <h6 class="rating-total">4.6 (1234)</h6>
+                        </div> -->
+                        <div class="profile-info">
+                            <ul>
+                                <li>
+                                    <p><span>Phone :</span> {{phone}}</p>
+                                    <div class="verify-icon">
+                                        <img src="assets/images/verify-icon.png" alt="">
+                                    </div>
+                                </li>
+                                <li>
+                                    <p><span>Email :</span> {{email}}</p>
+                                    <div class="verify-icon">
+                                        <img src="assets/images/verify-icon.png" alt="">
+                                    </div>
+                                </li>
+                                <li>
+                                    <p><span>Profession : </span> Counsellor</p>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- <div class="profile-info">
+                            <ul>
+                                <li>
+                                    <p><span>Overall teaching experience : </span> 10 Years </p>
+                                </li>
+                                <li>
+                                    <p><span>Subjects : </span> English</p>
+                                </li>
+                                <li>
+                                    <p><span>Grade : </span> Higher grade</p>
+                                </li>
+                            </ul>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="profile-all-info">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8 mb-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="upload-card card p-3 mt-3">
+                            <h5 class="profile-heading">Registered Student <a href="#">View All</a></h5>
+                            <div class="dash-card primary">
+                                <div class="dash-img">
+                                    <img src="assets/images/profile-icon1.png" alt="">
+                                </div>
+                                <div class="dash-text">
+                                    <h4>
+                                        <span>Last 7 days</span>
+                                        150
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="upload-card card p-3 mt-3">
+                            <h5 class="profile-heading">Active Course <a href="#">View All</a></h5>
+                            <div class="dash-card warning">
+                                <div class="dash-img">
+                                    <img src="assets/images/profile-icon2.png" alt="">
+                                </div>
+                                <div class="dash-text">
+                                    <h4>
+                                        50
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="upload-card card p-3 mt-3">
+                            <h5 class="profile-heading">My earning <a href="#">View History</a></h5>
+                            <div class="dash-card primary">
+                                <div class="dash-text">
+                                    <h4>
+                                        $1500
+                                        <span>Amount credited</span>
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="dash-card warning">
+                                <div class="dash-text">
+                                    <h4>
+                                        $200
+                                        <span>Amount refunded</span>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="upload-card card p-3 mt-3">
+                            <h5 class="profile-heading">Notifications <a href="#">View All</a></h5>
+                            <div class="notification-list student-noti">
+                                <ul>
+                                    <li>
+                                        <div class="noti-img">
+                                            <img src="assets/images/teacher1.jpg" alt="">
+                                        </div>
+                                        <div class="noti-txt">
+                                            <h6>John Doe <span>| 2-06-2021</span></h6>
+                                            <p>
+                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
+                                            </p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="noti-img">
+                                            <img src="assets/images/teacher1.jpg" alt="">
+                                        </div>
+                                        <div class="noti-txt">
+                                            <h6>John Doe <span>| 2-06-2021</span></h6>
+                                            <p>
+                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
+                                            </p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="noti-img">
+                                            <img src="assets/images/teacher1.jpg" alt="">
+                                        </div>
+                                        <div class="noti-txt">
+                                            <h6>John Doe <span>| 2-06-2021</span></h6>
+                                            <p>
+                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
+                                            </p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="noti-img">
+                                            <img src="assets/images/teacher1.jpg" alt="">
+                                        </div>
+                                        <div class="noti-txt">
+                                            <h6>John Doe <span>| 2-06-2021</span></h6>
+                                            <p>
+                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
+                                            </p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="noti-img">
+                                            <img src="assets/images/teacher1.jpg" alt="">
+                                        </div>
+                                        <div class="noti-txt">
+                                            <h6>John Doe <span>| 2-06-2021</span></h6>
+                                            <p>
+                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
+                                            </p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="teacher-calendar">
+                            <full-calendar [options]="calendarOptions"></full-calendar>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div class="chat">
+    <button class="btn p-0">
+        <img src="assets/images/chat-icon.png" alt="">
+    </button>
+</div>

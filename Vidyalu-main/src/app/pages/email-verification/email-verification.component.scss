@@ -1,0 +1,47 @@
+.msg {
+    text-align: center;
+    margin: 169px;
+    color: green;
+    font-size: 18px;
+}
+
+.mail-varify-box{
+    background: #fff;
+    border-radius: 15px;
+    border: 1px solid #ddd;
+    position: relative;
+    width: 600px;
+    height: 320px;
+    margin: 0 auto;
+    text-align: center;
+}
+.mail-varify-msg{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.mail-varify-msg-text{
+    color: #28a745;
+    font-size: 30px;
+    margin-top: 15px;
+    line-height: 38px;
+}
+.email-varify-logo{
+    width: 120px;
+    margin: 0 auto;
+    margin-bottom: 30px;
+}
+.email-varify-logo img{
+    max-width: 100%;
+}
+
+.back-button{
+    color: gray;
+    font-size: 16px;
+    margin-bottom: 40px;
+    display: inline-block;
+    .fa{
+        color: blue;
+    }
+}

@@ -1,0 +1,220 @@
+<div class="admin-wrap">
+    <div class="container-fluid">
+        <h1 class="h3 mb-4 text-gray-800">Counsellor List</h1>
+        <div class="row">
+
+            <!-- Earnings (Monthly) Card Example -->
+            <!-- <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Earnings (Monthly)</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">₹40,000</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- Earnings (Monthly) Card Example -->
+            <!-- <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Earnings (Annual)</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">₹215,000</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- Earnings (Monthly) Card Example -->
+            <!-- <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks
+                                </div>
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col-auto">
+                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="progress progress-sm mr-2">
+                                            <div class="progress-bar bg-info" role="progressbar" style="width: 50%"
+                                                aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- Pending Requests Card Example -->
+            <!-- <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-warning shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                    Pending Requests</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-comments fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered mb-0">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Block</th>
+                    <th width="200">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of counsellor_array; let i = index">
+                    <td>
+                        {{i + 1}}
+                    </td>
+                    <td>
+                        {{row.username}}
+                    </td>
+                    <td>
+                        {{row.email}}
+                    </td>
+                    <td *ngIf="row.block_by_admin == true">
+                        <span class="badge badge-danger"> Yes</span>
+                    </td>
+                    <td *ngIf="row.block_by_admin == false">
+                        <span class="badge badge-success"> No</span>
+                    </td>
+                    <td>
+                        <a class="btn btn-info" title="View" (click)=Counsellor_Details(row) data-toggle="modal"
+                            data-target="#modal-default">
+                            <i class="far fa-eye"></i>
+                        </a>
+                        <a class="btn btn-success mx-2" title="block" *ngIf="row.block_by_admin == true"
+                            (click)="Counsellor_Block_Status(row, false)">
+                            <i class="fa fa-unlock" aria-hidden="true"></i>
+                        </a>
+                        <a class="btn btn-success mx-2" title="block" *ngIf="row.block_by_admin == false"
+                            (click)="Counsellor_Block_Status(row, true)">
+                            <i class="fa fa-lock" aria-hidden="true"></i>
+                        </a>
+                        <!-- <a href="#" class="btn btn-success mx-2" title="Edit">
+                            <i class="far fa-edit"></i>
+                        </a>
+                        <a href="#" class="btn btn-danger" title="Delete">
+                            <i class="far fa-trash-alt"></i>
+                        </a> -->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"> <b>Counsellor Details.</b>
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card card-primary card-outline">
+                    <div class="card-body box-profile" *ngFor="let row of counsellor_details; let i = index">
+                        <div class="text-center">
+                            <img src="assets/images/avatar.jpg" alt="" *ngIf="row.profile_img == ''"
+                                style="width: 200px;">
+                            <img src="{{row.profile_image}}" alt="" *ngIf="row.profile_img != ''"
+                                style="width: 40%; height: 120px;">
+                        </div>
+                        <h3 class="profile-username text-center">{{row.username}}</h3>
+                        <!-- <p class="text-muted text-center">{{row.grades_name}}</p> -->
+                        <ul class="list-group list-group-unbordered mb-3">
+                            <li class="list-group-item">
+                                <b>Email</b> <a class="float-right">{{row.email}}</a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Phone</b> <a class="float-right">{{row.phone}}</a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Address</b> <a class="float-right"
+                                    *ngIf="row.address != null && row.address != '' ">{{row.address}},
+                                    {{row.city}},{{row.state}},{{row.zip_code}}
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Certificate</b>
+                                <a *ngIf="row.certificate != null && row.certificate != ''" class="float-right"
+                                    target="_blank" href="{{row.certificate_img}}">
+                                    <i class="fa fa-file-pdf-o fa-2x"></i>
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Id Proof</b>
+                                <a *ngIf="row.id_proof != null && row.id_proof != ''" class="float-right"
+                                    target="_blank" href="{{row.id_proof_img}}">
+                                    <i class="fa fa-file-pdf-o fa-2x"></i>
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Graduate</b>
+                                <div class="row">
+                                    <div class="col-6 p-1" *ngFor="let r1 of row.services, let M = index">
+                                        <button type="button" class="btn btn-block btn-default">{{r1.service}}</button>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Certificate</b>
+                                <div class="row" *ngIf="row.awards != null && row.awards != ''">
+                                    <div class="col-6 p-1" *ngFor="let r1 of row.awards, let M = index">
+                                        <button type="button" class="btn btn-block btn-default">{{r1.award}}</button>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Created_at</b> <a class="float-right">{{row.created_at | date:'d MMM y'}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ngx-spinner></ngx-spinner>

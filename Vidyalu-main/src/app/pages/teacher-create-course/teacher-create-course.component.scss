@@ -1,0 +1,20 @@
+.class-btn {
+    color: #0056d2;
+    border-style: hidden;
+    margin-left: 10p;
+    margin-left: 10px;
+}
+
+.edit-btn{
+    border: none;
+    color: #0056d2;
+    background: transparent;
+    position: relative;
+    &:focus{
+        box-shadow: none;
+    }
+}
+
+.remove-icon{
+    left: 0;
+}

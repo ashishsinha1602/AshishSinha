@@ -1,0 +1,66 @@
+<div class="admin-wrap">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="course-list">
+                    <ul>
+                        <li *ngFor="let course of course_array | paginate: { itemsPerPage: 9, currentPage: p }">
+                            <a (click)="NavigateIntoCourseDetails(course)">
+                                <div class="course-box">
+                                    <!-- <div class="course-img">
+                                        <img src="{{ course.img }}" alt="">
+                                    </div> -->
+                                    <video width="100%" height="180">
+                                        <source src="{{course_image_path}}{{course.video}}" type="video/mp4">
+                                    </video>
+                                    <div class="course-content">
+                                        <h5 class="course-name">{{course.title}}</h5>
+                                        <div class="rating">
+                                            <img src="assets/images/rating-4.png" alt="" width="87" height="15">
+                                            <h6 class="rating-total">4.6 (1234)</h6>
+                                        </div>
+                                        <!-- <h5 class="course-level">{{course.difficulty}}</h5> -->
+                                        <h3 class="estimate-time">Estimated Time
+                                            <span>{{course.total_hours}} hrs</span>
+                                        </h3>
+                                        <h2 class="course-price">₹{{course.price}}</h2>
+                                    </div>
+                                    <!-- Nested if else in angular -->
+                                    <div class="created-by">
+                                        <div class="creator-img">
+                                            <ng-container
+                                                *ngIf="(course.teacher_details.profile_img == '' || course.teacher_details.profile_img == null)
+                                        && (course.teacher_details.photo_url == '' || course.teacher_details.photo_url == null); else ajaxNotY">
+                                                <img src="assets/images/avatar-small.jpg" alt="">
+                                            </ng-container>
+                                            <ng-template #ajaxNotY>
+                                                <ng-container
+                                                    *ngIf="(course.teacher_details.profile_img == '' || course.teacher_details.profile_img == null)
+                                            && (course.teacher_details.photo_url != '' || course.teacher_details.photo_url != null); else multipleNotY">
+                                                    <img src="{{course.teacher_details.photo_url}}" alt="">
+                                                </ng-container>
+                                                <ng-template #multipleNotY>
+                                                    <img src="{{course_image_path}}{{course.teacher_details.profile_img}}"
+                                                        alt="">
+                                                </ng-template>
+                                            </ng-template>
+                                        </div>
+                                        <div class="creator-name">
+                                            <h4>
+                                                Created by
+                                                <span>{{course.teacher_details.full_name}}</span>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <pagination-controls (pageChange)="p = $event" class="float-right"></pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ngx-spinner></ngx-spinner>
