@@ -1,0 +1,232 @@
+<div class="admin-wrap">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Profile</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Update Profile</li>
+                </ol>
+            </nav>
+            <div class="clearfix"></div>
+            <form [formGroup]="edit_profile_form" (ngSubmit)="EditCounsellorProfile()">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Personal Details</h5>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="">Name</label>
+                                <input type="text" class="form-control" placeholder="John Doe" formControlName="name"
+                                    name="name" [(ngModel)]="name">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="">Phone Number</label>
+                                <input type="text" class="form-control" placeholder="123 456 7890"
+                                    formControlName="phone" name="phone" [(ngModel)]="phone">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="">Email Id</label>
+                                <input type="text" class="form-control" placeholder="john123@gmail.com"
+                                    formControlName="email" name="email" [(ngModel)]="email" disabled>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="">Address</label>
+                                <input type="text" class="form-control" placeholder="Address" formControlName="address"
+                                    name="address" [(ngModel)]="address">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="">State</label>
+                                <select name="" id="" formControlName="state" aria-placeholder="State"
+                                    class="form-control" (change)="BasedOntheState(state)" [(ngModel)]="state"
+                                    name="state" [(ngModel)]="state">
+                                    <option value="" disabled>State</option>
+                                    <option [value]="st.state" *ngFor="let st of state_array">{{st.state}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="">City</label>
+                                <select name="" id="" class="form-control" aria-placeholder="City" [(ngModel)]="city"
+                                    name="city" formControlName="city" [(ngModel)]="city">
+                                    <option value="" disabled>City</option>
+                                    <option [value]="ct" *ngFor="let ct of city_array">{{ct}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="">Zip Code</label>
+                                <input type="text" class="form-control" placeholder="Pincode" formControlName="pincode"
+                                    name="pincode" [(ngModel)]="pincode">
+                            </div>
+                            <div class="form-group col-md-8">
+                                <label for="">discription</label>
+                                <textarea class="form-control" placeholder="Description" rows="2"
+                                    formControlName="description" name="description"
+                                    [(ngModel)]="description"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Educational qualification</h5>
+                        <div class="form-row">
+                            <div class="col-md-11">
+                                <div class="form-group" *ngFor="let service of t.controls; let i = index">
+                                    <div class="row" [formGroup]="service">
+                                        <input type="text" class="form-control" placeholder="Graduate"
+                                            formControlName="service">
+                                        <button class="btn edit-btn" title="Edit" (click)="AddServiceDetails()">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                        <a class="remove-icon" *ngIf="t.length > 1"
+                                            (click)="delete_service_details(i+1)">
+                                            <i class="fa fa-remove"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-11">
+                                <div class="form-group" *ngFor="let award of g.controls; let i = index">
+                                    <div class="row" [formGroup]="award">
+                                        <input type="text" class="form-control" placeholder="Certificates"
+                                            formControlName="award">
+                                        <button class="btn edit-btn" title="Edit" (click)="AddAwardDetails()">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                        <a class="remove-icon" *ngIf="g.length > 1" (click)="delete_award_details(i+1)">
+                                            <i class="fa fa-remove"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-11">
+                                <h5 class="card-title">Search Keyword</h5>
+                                <textarea class="form-control" placeholder="Search Keyword" rows="3"
+                                    formControlName="search" name="search"
+                                    [(ngModel)]="search"></textarea>
+                            </div>
+                            <div class="col-md-12">
+                                <hr>
+                            </div>
+                            <div class="col-md-12">
+                                <h5 class="card-title">Document/Certificate</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <!-- <div class="uploaded-doc">
+                                    <div class="del-button">
+                                        <i class="fa fa-times"></i>
+                                    </div>
+                                    <img src="https://dummyimage.com/700x400/4f4f4f/fff" alt="">
+                                </div> -->
+                                <div class="col-md-3">
+                                    <a *ngIf="certificate_img != null && certificate_img != ''" class="float-left"
+                                        target="_blank" href="{{certificate_img}}">
+                                        <i class="fa fa-file-pdf-o fa-3x"></i>
+                                    </a>
+                                </div>
+                                <div class="custom-file my-3">
+                                    <input type="file" class="custom-file-input" id="validatedCustomFile"
+                                        (change)="onFileChange($event)">
+                                    <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+                                    <div class="invalid-feedback">Example invalid custom file feedback</div>
+                                    <p>{{uploded_msg}}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <hr>
+                            </div>
+                            <div class="col-md-12">
+                                <h5 class="card-title">Profile image</h5>
+                                <div class="form-row">
+                                    <div class="col-md-3">
+                                        <div class="uploaded-doc profile-pic-uploader">
+                                            <!-- <div class="del-button">
+                                                <i class="fa fa-times"></i>
+                                            </div> -->
+                                            <!-- <img src="assets/images/counselor2.jpg" alt=""> -->
+                                            <img src="{{profile_img}}" alt="">
+                                        </div>
+                                        <div class="custom-file my-3">
+                                            <input type="file" class="custom-file-input" id="validatedCustomFile"
+                                                (change)="ProfileUpload($event)">
+                                            <label class="custom-file-label" for="validatedCustomFile">Choose
+                                                file...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="invalid-feedback">Example invalid custom file feedback</div>
+                                        <p>{{profile_uploded_msg}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <h5 class="card-title">Documents</h5>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                            id="inlineRadio1" value="aadhar_card" formControlName="identification_card"
+                                            name="identification_card" (click)="IdentificationText('Aadhar card')"
+                                            [(ngModel)]="identification_card">
+                                        <label class="form-check-label" for="inlineRadio1">Aadhar&nbsp;card</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                            id="inlineRadio2" value="pan_card" formControlName="identification_card"
+                                            name="identification_card" (click)="IdentificationText('PAN card')"
+                                            [(ngModel)]="identification_card">
+                                        <label class="form-check-label" for="inlineRadio2">PAN card</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                            id="inlineRadio3" value="passport" formControlName="identification_card"
+                                            name="identification_card" (click)="IdentificationText('Passport')"
+                                            [(ngModel)]="identification_card">
+                                        <label class="form-check-label" for="inlineRadio3">Passport</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="" *ngIf="identification_text != ''">Upload {{identification_text}}</label>
+
+                                <!-- <div class="uploaded-doc">
+                                    <div class="del-button">
+                                        <i class="fa fa-times"></i>
+                                    </div>
+                                    <img src="https://dummyimage.com/700x400/4f4f4f/fff" alt="">
+                                </div> -->
+                                <div class="col-md-3">
+                                    <a *ngIf="id_proof_img != null && id_proof_img != ''" class="float-left"
+                                        target="_blank" href="{{id_proof_img}}">
+                                        <i class="fa fa-file-pdf-o fa-3x"></i>
+                                    </a>
+                                </div>
+                                <div class="custom-file my-3">
+                                    <input type="file" class="custom-file-input" id="validatedCustomFile"
+                                        (change)="IdUpload($event)">
+                                    <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+                                    <div class="invalid-feedback">Example invalid custom file feedback</div>
+                                    <p>{{id_uploded_msg}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 text-right my-4">
+                        <button class="btn btn-primary px-5" [disabled]="!this.edit_profile_form.valid">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+<ngx-spinner></ngx-spinner>

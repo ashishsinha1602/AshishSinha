@@ -1,0 +1,265 @@
+<app-admin-sidebar class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"></app-admin-sidebar>
+
+<!-- Admin Header-->
+<!-- <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+    <ul class="navbar-nav ml-auto">
+        <div class="topbar-divider d-none d-sm-block"></div>
+        <li class="nav-item dropdown no-arrow">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{name}}</span>
+                <img class="img-profile rounded-circle" src="assets/images/avatar.jpg"
+                    style="width: 45px; cursor: pointer;" *ngIf="image == ''">
+                <img class="img-profile rounded-circle" src="{{image}}" style="width: 45px; cursor: pointer"
+                    *ngIf="image != ''">
+            </a>
+            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <a class="dropdown-item" routerLink="/admin/profile">
+                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Profile
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" (click)="Admin_Logout()">
+                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Logout
+                </a>
+            </div>
+        </li>
+    </ul>
+</nav> -->
+
+<!-- End of Admin Header -->
+
+<!-- Teacher Header -->
+<!-- <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/course-list">Courses +
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/counsellor-search-list">Counsellor/Teachers</a>
+        </li>
+    </ul>
+    <div class="login-btns my-2 my-lg-0" *ngIf="user_data == null || user_data == undefined">
+        <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" routerLink="/signup">Sign Up</button>
+        <button class="btn btn-primary my-2 my-sm-0" type="submit" routerLink="/login">Login</button>
+    </div>
+
+    <div class="login-btns my-2 my-lg-0" *ngIf="user_data != null && user_data != undefined">
+
+        <li class="nav-item dropdown no-arrow">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <span class=" my-2 my-sm-0 mr-2 d-none d-lg-inline text-gray-600 small">{{name}}</span>
+                <img class="img-profile rounded-circle" src="{{image}}" style="width: 45px; cursor: pointer">
+            </a>
+
+            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <a class="dropdown-item" (click)="UserProfile()">
+                    <i class="fa fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Profile
+                </a>
+                <a class="dropdown-item" (click)="User_Logout()">
+                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Logout
+                </a>
+            </div>
+        </li>
+    </div>
+</nav> -->
+
+
+<div [ngSwitch]="role">
+    <ng-container *ngSwitchCase="'teacher'">
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+            <!-- Topbar Search -->
+            <!-- <form
+                class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                <div class="input-group">
+                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for Teacher/Counsellor"
+                        aria-label="Search" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-warning" type="button">
+                            <i class="fas fa-search fa-sm"></i>
+                        </button>
+                    </div>
+                </div>
+            </form> -->
+
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/course-list">Courses +
+                    </a>
+                </li>
+        
+                <!-- <li class="nav-item">
+                    <a class="nav-link" routerLink="/counsellor-search-list">Counsellor/Teachers</a>
+                </li> -->
+            </ul>
+            <div class="login-btns my-2 my-lg-0" *ngIf="user_data == null || user_data == undefined">
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" routerLink="/signup">Sign Up</button>
+                <button class="btn btn-primary my-2 my-sm-0" type="submit" routerLink="/login">Login</button>
+            </div>
+        
+            <div class="login-btns my-2 my-lg-0" *ngIf="user_data != null && user_data != undefined">
+        
+                <li class="nav-item dropdown no-arrow">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <span class=" my-2 my-sm-0 mr-2 d-none d-lg-inline text-gray-300 small">{{name}}</span>
+                        <img class="img-profile rounded-circle" src="{{image}}" style="width: 45px; cursor: pointer">
+                    </a>
+        
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                        <a href="javascript:void(0)" class="dropdown-item" (click)="UserProfile()">
+                            <i class="fa fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Profile
+                        </a>
+                        <a href="javascript:void(0)" class="dropdown-item" (click)="User_Logout()">
+                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Logout
+                        </a>
+                    </div>
+                </li>
+            </div>
+        </nav>
+    </ng-container>
+    <ng-container *ngSwitchCase="'counsellor'">
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+            <!-- Topbar Search -->
+            <!-- <form
+                class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                <div class="input-group">
+                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for Teacher/Counsellor"
+                        aria-label="Search" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-warning" type="button">
+                            <i class="fas fa-search fa-sm"></i>
+                        </button>
+                    </div>
+                </div>
+            </form> -->
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/course-list">Courses +
+                    </a>
+                </li>
+        
+                <!-- <li class="nav-item">
+                    <a class="nav-link" routerLink="/counsellor-search-list">Counsellor/Teachers</a>
+                </li> -->
+            </ul>
+            <div class="login-btns my-2 my-lg-0" *ngIf="user_data == null || user_data == undefined">
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" routerLink="/signup">Sign Up</button>
+                <button class="btn btn-primary my-2 my-sm-0" type="submit" routerLink="/login">Login</button>
+            </div>
+        
+            <div class="login-btns my-2 my-lg-0" *ngIf="user_data != null && user_data != undefined">
+        
+                <li class="nav-item dropdown no-arrow">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <span class=" my-2 my-sm-0 mr-2 d-none d-lg-inline text-gray-300 small">{{name}}</span>
+                        <img class="img-profile rounded-circle" src="{{image}}" style="width: 45px; cursor: pointer">
+                    </a>
+        
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                        <a href="javascript:void(0)" class="dropdown-item" (click)="UserProfile()">
+                            <i class="fa fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Profile
+                        </a>
+                        <a href="javascript:void(0)" class="dropdown-item" (click)="User_Logout()">
+                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Logout
+                        </a>
+                    </div>
+                </li>
+            </div>
+        </nav>
+    </ng-container>
+    <ng-container *ngSwitchCase="'student'">
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+            <!-- Topbar Search -->
+            <!-- <form
+                class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                <div class="input-group">
+                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for Teacher/Counsellor"
+                        aria-label="Search" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-warning" type="button">
+                            <i class="fas fa-search fa-sm"></i>
+                        </button>
+                    </div>
+                </div>
+            </form> -->
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/course-list">Courses +
+                    </a>
+                </li>
+        
+                <!-- <li class="nav-item">
+                    <a class="nav-link" routerLink="/counsellor-search-list">Counsellor/Teachers</a>
+                </li> -->
+            </ul>
+            <div class="login-btns my-2 my-lg-0" *ngIf="user_data == null || user_data == undefined">
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" routerLink="/signup">Sign Up</button>
+                <button class="btn btn-primary my-2 my-sm-0" type="submit" routerLink="/login">Login</button>
+            </div>
+        
+            <div class="login-btns my-2 my-lg-0" *ngIf="user_data != null && user_data != undefined">
+        
+                <li class="nav-item dropdown no-arrow">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <span class=" my-2 my-sm-0 mr-2 d-none d-lg-inline text-gray-300 small">{{name}}</span>
+                        <img class="img-profile rounded-circle" src="{{image}}" style="width: 45px; cursor: pointer">
+                    </a>
+        
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                        <a href="javascript:void(0)" class="dropdown-item" (click)="UserProfile()">
+                            <i class="fa fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Profile
+                        </a>
+                        <a href="javascript:void(0)" class="dropdown-item" (click)="User_Logout()">
+                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Logout
+                        </a>
+                    </div>
+                </li>
+            </div>
+        </nav>
+    </ng-container>
+    <ng-container *ngSwitchCase="'admin'">
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+            <ul class="navbar-nav ml-auto">
+                <div class="topbar-divider d-none d-sm-block"></div>
+                <li class="nav-item dropdown no-arrow">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{name}}</span>
+                        <img class="img-profile rounded-circle" src="assets/images/avatar.jpg"
+                            style="width: 45px; cursor: pointer;" *ngIf="image == ''">
+                        <img class="img-profile rounded-circle" src="{{image}}" style="width: 45px; cursor: pointer"
+                            *ngIf="image != ''">
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                        <a class="dropdown-item" routerLink="/admin/profile">
+                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Profile
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" (click)="Admin_Logout()">
+                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Logout
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </ng-container>
+</div>
+<!-- End of Teacher Header -->
+

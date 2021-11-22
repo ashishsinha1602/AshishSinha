@@ -1,0 +1,133 @@
+<div class="footer-part">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="footer-box">
+                    <h5>Learning Consider it done.</h5>
+                    <ul>
+                        <li>
+                            <a routerLink="/about-us">
+                                About
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                Careers
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                Press
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="social-media">
+                        <ul>
+                            <li>
+                                <a href="#" target="_blank">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" target="_blank">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" target="_blank">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="footer-box">
+                    <h5>Legal</h5>
+                    <ul>
+                        <li>
+                            <a routerLink="/terms-of-use">
+                                Terms of Use
+                            </a>
+                        </li>
+                        <li>
+                            <a routerLink="/privacy-policy">
+                                Privacy Policy
+                            </a>
+                        </li>
+                        <li>
+                            <a routerLink="/accessibility-policy">
+                                Accessibility Policy
+                            </a>
+                        </li>
+                        <li>
+                            <a routerLink="/trademark-policy">
+                                Trademark Policy
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                Sitemap
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="footer-box">
+                    <h5>Support</h5>
+                    <ul>
+                        <li>
+                            <a routerLink="/help">
+                                Help
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                Safety
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                COVID-19 Info
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                CA Privacy Notice
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                Do Not Sell My Info
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="footer-box"> 
+                    <h5>Newsletter</h5>
+                    <form [formGroup]="newsletter_form" (ngSubmit)="SubmitNewsletter()">
+                        <input type="email" placeholder="Email" class="form-control"
+                        formControlName="email" name="email">
+                        <button class="btn btn-warning" [disabled]="!newsletter_form.valid">SUBMIT</button>
+                    </form> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="copy-right">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <p>Copyright © 2021 . All rights Reserved.</p>
+            </div>
+            <div class="col-md-6 text-right">
+                <img src="assets/images/logo.png" alt="" width="80">
+            </div>
+        </div>
+    </div>
+</div>

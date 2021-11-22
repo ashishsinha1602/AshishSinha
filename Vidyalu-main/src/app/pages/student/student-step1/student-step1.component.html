@@ -1,0 +1,56 @@
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="application-step">
+                <h3>Student Application Form</h3>
+                <!-- <div class="step-form">
+                    <ul>
+                        <li class="active">
+                            <span>Step 1</span>
+                        </li>
+                    </ul>
+                </div> -->
+                <form [formGroup]="step1_form" (ngSubmit)="SubmitStep1()" >
+                    <h5 class="mt-5 mb-3">Basic information</h5>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="John Doe" formControlName="name"
+                            name="name">
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" class="form-control" placeholder="123 456 7890" formControlName="phone"
+                            name="phone">
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control" placeholder="john123@gmail.com" formControlName="email"
+                            name="email" disabled>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Address" formControlName="address"
+                            name="address">
+                    </div>
+                    <div class="form-group">
+                        <select name="" id="" formControlName="state" aria-placeholder="State" class="form-control"
+                            (change)="BasedOntheState(state)" [(ngModel)]="state" name="state">
+                            <option value="" disabled>State</option>
+                            <option *ngFor="let st of state_array">{{st.state}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select name="" id="" class="form-control" aria-placeholder="City" [(ngModel)]="city"
+                            name="city" formControlName="city">
+                            <option value="" disabled>City</option>
+                            <option *ngFor="let ct of city_array">{{ct}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Pin code" formControlName="pincode"
+                            name="pincode">
+                    </div>
+                    <button class="btn btn-primary btn-block" [disabled]="!step1_form.valid">Continue</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ngx-spinner></ngx-spinner>

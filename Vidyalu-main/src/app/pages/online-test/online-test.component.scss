@@ -1,0 +1,107 @@
+.course-test-name{
+    margin: 0;
+    font-size: 18px;
+    span{
+        color: #ff8b01;
+    }
+}
+.question{
+    font-size: 18px;
+    color: #000;
+    margin: 0;
+    line-height: 30px;
+}
+.test-top{
+    background-color: #0056d2;
+    padding: 10px 0;
+    p{
+        color: #fff;
+        margin: 0;
+        font-size: 16px;
+    } 
+}
+.right-bg{
+    background: #d6edf6;
+    padding: 17px 15px;
+    height: 100vh;
+}
+.ans-options{
+    margin-bottom: 40px;
+}
+.answer-mark{
+    ul{
+        display: -webkit-box;      
+        display: -moz-box;        
+        display: -ms-flexbox;     
+        display: -webkit-flex; 
+        display: flex;
+        flex-wrap: wrap;
+        li{
+            width: 15.2%;
+            height: 48px;
+            text-align: center;
+            color: #818286;
+            background: #fff;
+            line-height: 54px;
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+            margin-right: 5px;
+            &.answered{
+                background: #0056d2;
+                color: #fff;
+            }
+            &.not-answered{
+                background: #ff8b01;
+                color: #fff;
+            }
+            &:nth-child(6n+6){
+                margin-right: 0;
+            }
+        }
+    }
+}
+.answer-tag{
+    margin-top: 30px;
+    ul{
+        display: -webkit-box;      
+        display: -moz-box;        
+        display: -ms-flexbox;     
+        display: -webkit-flex; 
+        display: flex;
+        flex-wrap: wrap;
+        li{
+            width: 32%;
+            margin-right: 5px;
+            text-align: center;
+            color: #818286;
+            background: #fff;
+            padding: 8px 6px;
+            &.answered{
+                background: #0056d2;
+                color: #fff;
+            }
+            &.not-answered{
+                background: #ff8b01;
+                color: #fff;
+            }
+            &:last-child{
+                margin-right: 0;
+            }
+        }
+    }
+}
+.botto-fix{
+    text-align: right;
+    background: #fff;
+    box-shadow: 0 0 5px #eaeaea;
+    border: 1px solid #f3f3f3;
+    padding: 10px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 99%;
+    .btn{
+        margin-left: 10px;
+    }
+}

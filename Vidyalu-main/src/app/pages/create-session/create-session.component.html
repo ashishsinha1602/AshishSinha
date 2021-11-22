@@ -1,0 +1,242 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+            <div class="create-course-left">
+                <h3 class="main-heading mt-5">Create a Counseling Session</h3>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <input type="text" class="form-control" placeholder="Session name">
+                    </div>
+                    <div class="form-group col-md-12">
+                        <textarea class="form-control" placeholder="Course Description" rows="4"></textarea>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <input type="text" class="form-control" placeholder="Topics to over">
+                    </div>
+                    <div class="form-group col-md-12">
+                        <input type="text" class="form-control" placeholder="Outcome">
+                    </div>
+                    <div class="form-group col-md-12">
+                        <input type="text" class="form-control" placeholder="Estimated time">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <select name="" id="" class="form-control">
+                            <option value="">Resourse Type</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <input type="text" class="form-control" placeholder="Price">
+                    </div>
+                    <div class="form-group col-md-12">
+                        <input type="text" class="form-control" placeholder="Tags">
+                    </div>
+                    <div class="form-group col-md-12">
+                        <div class="upload-file-or">
+                            <div class="form-group half-width upload-card card p-3">
+                                <h5 class="mt-1 mb-3">Upload Video</h5>
+                                <input type="url" class="form-control" placeholder="Upload Video url">
+                                <div class="text-center my-2">
+                                    OR
+                                </div>
+                                <div class="upload-wrap">
+                                    <div class="upload">
+                                        <input type="file" class="btn-upload">
+                                        <button class="btn btn-outline-warning">Upload</button>
+                                    </div>
+                                    <div class="uploaded-file">
+                                        <ul>
+                                            <li>
+                                                <i class="fas fa-file-video"></i>
+                                                <p>abcd.mp4</p>
+                                                <button class="btn btn-sm cross">
+                                                    <i class="far fa-times-circle"></i>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <p class="text-muted mt-3 mb-0">Allowed Type : MP4, AVI, MPG
+                                    5 MB Limit</p>
+                            </div>
+                            <div class="text-center or">
+                                Or
+                            </div>
+                            <div class="form-group half-width upload-card card p-3">
+                                <h5 class="mt-1 mb-3">Upload Jpeg</h5>
+                                <div class="upload-wrap">
+                                    <div class="upload">
+                                        <input type="file" class="btn-upload">
+                                        <button class="btn btn-outline-warning">Upload</button>
+                                    </div>
+                                    <div class="uploaded-file">
+                                        <ul>
+                                            <li>
+                                                <i class="fas fa-image"></i>
+                                                <p>abcd.jpeg</p>
+                                                <button class="btn btn-sm cross">
+                                                    <i class="far fa-times-circle"></i>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <p class="text-muted mt-3 mb-0">Allowed Type : PDF, JPEG
+                                    5 MB Limit</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <div class="upload-card card p-3">
+                            <h5 class="mt-1 mb-3">Upload Resources</h5>
+                            <div class="upload-wrap">
+                                <div class="upload">
+                                    <input type="file" class="btn-upload">
+                                    <button class="btn btn-outline-warning">Upload</button>
+                                </div>
+                                <div class="uploaded-file">
+                                    <ul>
+                                        <li>
+                                            <i class="fas fa-file-pdf"></i>
+                                            <p>abcd.pdf</p>
+                                            <button class="btn btn-sm cross">
+                                                <i class="far fa-times-circle"></i>
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-file-pdf"></i>
+                                            <p>abcd.pdf</p>
+                                            <button class="btn btn-sm cross">
+                                                <i class="far fa-times-circle"></i>
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-file-video"></i>
+                                            <p>abcd.mp4</p>
+                                            <button class="btn btn-sm cross">
+                                                <i class="far fa-times-circle"></i>
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <p class="text-muted mt-3 mb-0">Allowed Type : Excel, PPT, PDF, JPEG, Videos
+                                5 MB Limit</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="appli-btn mb-5">
+                    <button class="btn btn-outline-primary" routerLink="/">Cancel</button>
+                    <button class="btn btn-outline-primary" routerLink="/">Save and add another</button>
+                    <button class="btn btn-primary" routerLink="/">Save</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="create-course-right">
+                <h3 class="main-heading mt-5">Created Sessions</h3>
+                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Active</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Inactive</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                        <div class="active-course">
+                            <ul>
+                                <li routerLink="/"> 
+                                    <div class="active-course-img">
+                                        <img src="assets/images/course-img2.jpg" alt="">
+                                    </div>
+                                    <div class="active-course-text">
+                                        <h5 class="course-name">Session 1</h5>
+                                        <div class="rating">
+                                            <img src="assets/images/rating-4.png" alt="" width="87" height="15">
+                                            <h6 class="rating-total">4.6 (1234)</h6>
+                                        </div>
+                                        <h5 class="course-level">Intermediate</h5>
+                                    </div>
+                                </li>
+                                <li routerLink="/">
+                                    <div class="active-course-img">
+                                        <img src="assets/images/course-img2.jpg" alt="">
+                                    </div>
+                                    <div class="active-course-text">
+                                        <h5 class="course-name">Session 2</h5>
+                                        <div class="rating">
+                                            <img src="assets/images/rating-4.png" alt="" width="87" height="15">
+                                            <h6 class="rating-total">4.6 (1234)</h6>
+                                        </div>
+                                        <h5 class="course-level">Intermediate</h5>
+                                    </div>
+                                </li>
+                                <li routerLink="/">
+                                    <div class="active-course-img">
+                                        <img src="assets/images/course-img2.jpg" alt="">
+                                    </div>
+                                    <div class="active-course-text">
+                                        <h5 class="course-name">Session 3</h5>
+                                        <div class="rating">
+                                            <img src="assets/images/rating-4.png" alt="" width="87" height="15">
+                                            <h6 class="rating-total">4.6 (1234)</h6>
+                                        </div>
+                                        <h5 class="course-level">Intermediate</h5>
+                                    </div>
+                                </li>
+                                <li routerLink="/">
+                                    <div class="active-course-img">
+                                        <img src="assets/images/course-img2.jpg" alt="">
+                                    </div>
+                                    <div class="active-course-text">
+                                        <h5 class="course-name">Session 3</h5>
+                                        <div class="rating">
+                                            <img src="assets/images/rating-4.png" alt="" width="87" height="15">
+                                            <h6 class="rating-total">4.6 (1234)</h6>
+                                        </div>
+                                        <h5 class="course-level">Intermediate</h5>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                        <div class="active-course">
+                            <ul>
+                                <li routerLink="/">
+                                    <div class="active-course-img">
+                                        <img src="assets/images/course-img2.jpg" alt="">
+                                    </div>
+                                    <div class="active-course-text">
+                                        <h5 class="course-name">Session 6</h5>
+                                        <div class="rating">
+                                            <img src="assets/images/rating-4.png" alt="" width="87" height="15">
+                                            <h6 class="rating-total">4.6 (1234)</h6>
+                                        </div>
+                                        <h5 class="course-level">Intermediate</h5>
+                                    </div>
+                                </li>
+                                <li routerLink="/">
+                                    <div class="active-course-img">
+                                        <img src="assets/images/course-img2.jpg" alt="">
+                                    </div>
+                                    <div class="active-course-text">
+                                        <h5 class="course-name">Session 9</h5>
+                                        <div class="rating">
+                                            <img src="assets/images/rating-4.png" alt="" width="87" height="15">
+                                            <h6 class="rating-total">4.6 (1234)</h6>
+                                        </div>
+                                        <h5 class="course-level">Intermediate</h5>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

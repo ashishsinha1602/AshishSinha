@@ -1,0 +1,139 @@
+<div class="admin-wrap">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="create-course-left">
+                    <h3 class="main-heading mt-3">Create Session</h3>
+                    <form [formGroup]="session_form" (ngSubmit)="SubmitSession()">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control" placeholder="Session Title"
+                                    formControlName="title">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control" placeholder="Year of Experience"
+                                    formControlName="year_of_experience">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <select name="" id="" class="form-control" formControlName="language">
+                                    <option value="" disabled>Select Language</option>
+                                    <option [value]="lg" *ngFor="let lg of language_array">{{lg}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control" placeholder="Session Price"
+                                    formControlName="price">
+                            </div>
+                            <div class="col-md-12">
+                                <label for="">Schedule of Session</label>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <input type="text" class="form-control" placeholder="Total days"
+                                            formControlName="total_day">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <input type="text" class="form-control" placeholder="No of hours"
+                                            formControlName="total_hour">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <input type="text" class="form-control" placeholder="Weekly schedule"
+                                            formControlName="weekly_schedule">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <input [min]="todayDate" class="form-control" formControlName="start_date"
+                                            [owlDateTimeTrigger]="dt1" [owlDateTime]="dt1" placeholder="Start Date">
+                                        <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+                                    </div>
+                                    <!-- <div class="form-group col-md-4">
+                            <input type="text" class="form-control" placeholder="Weekly schedule">
+                        </div> -->
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <label>Add Session Timings </label>
+                                <button class="btn edit-btn" title="Edit" (click)="AddSessionTiming()">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+
+                                <div *ngFor="let add_session of t.controls; let i = index">
+                                    <div class="row " [formGroup]="add_session">
+                                        <div class="form-group col-md-6">
+                                            <input class="form-control" [owlDateTimeTrigger]="dt3" [owlDateTime]="dt3"
+                                                placeholder="Date" [min]="todayDate" formControlName="session_date">
+                                            <owl-date-time [pickerType]="'calendar'" #dt3></owl-date-time>
+                                        </div>
+                                        <div class="form-group col-md-5">
+                                            <input class="form-control" [owlDateTimeTrigger]="dt4" [owlDateTime]="dt4"
+                                                placeholder="Time: HH:MM" formControlName="session_time">
+                                            <owl-date-time [pickerType]="'timer'" #dt4></owl-date-time>
+
+                                        </div>
+                                        <div class="form-group relative col-md-1">
+                                            <a class="remove-icon" *ngIf="t.length > 1" (click)="delete_session(i+1)">
+                                                <i class="fa fa-remove"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <div class="upload-card card p-3">
+                                    <h5 class="mt-1 mb-3">Upload Session Contents</h5>
+                                    <a (click)="Download_template()" class="cursor"><i class="fas fa-download"></i> Download Session
+                                        Content</a>
+                                    <div class="upload-wrap mt-3">
+                                        <div class="upload">
+                                            <input type="file" class="btn-upload cursor"
+                                                (change)="Upload_Session_Content($event)">
+                                            <button class="btn btn-outline-warning">Upload</button>
+                                        </div>
+                                        <div class="uploaded-file">
+                                            <ul>
+                                                <li>
+                                                    <span> <b>{{session_content_msg}}</b></span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <p class="text-muted mt-3 mb-0">Allowed Type : Doc, PDF, JPEG
+                                        5 MB Limit</p>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <div class="upload-card card p-3">
+                                    <h5 class="mt-1 mb-3">Promo Video</h5>
+                                    <div class="upload-wrap">
+                                        <div class="upload">
+                                            <input type="file" class="btn-upload cursor" (change)="Upload_Promo_Video($event)">
+                                            <button class="btn btn-outline-warning">Upload</button>
+                                        </div>
+                                        <div class="uploaded-file">
+                                            <ul>
+                                                <li>
+                                                    <span> <b>{{video_msg}}</b></span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <p class="text-muted mt-3 mb-0">Allowed Type : MP4, AVI, MPG
+                                        5 MB Limit</p>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <textarea class="form-control" placeholder="Silent Features of Session" rows="4"
+                                    formControlName="silent_feature"></textarea>
+                            </div>
+                        </div>
+                        <div class="mb-5 text-right">
+                            <button class="btn btn-outline-primary back-btn mr-3" routerLink="/counsellor/session-list">Back</button>
+                            <button class="btn btn-primary" [disabled]="!session_form.valid">Create Session</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ngx-spinner></ngx-spinner>
