@@ -1,0 +1,21 @@
+car,price,body,mileage,engV,engType,registration,year,model,drive
+Porsche,55000,crossover,105,3,Diesel,yes,2012,Cayenne,full
+Kia,1.80E+04,crossover,64,2,Diesel,yes,2011,Sportage,full
+Kia,21700,crossover,58,2,Diesel,yes,2012,Sportage,full
+Volkswagen,2400,vagon,320,1.9,Diesel,no,2000,Passat B5,front
+Volkswagen,2350,sedan,300,1.9,Diesel,no,1998,Passat B5,front
+Honda,18600,vagon,98,2.4,Gas,yes,2011,Accord,front
+Mercedes-Benz,104999,crossover,1,3,Diesel,yes,2016,GLE-Class,full
+Toyota,195000,crossover,0,4.5,Diesel,yes,2016,Land Cruiser 200,full
+Porsche,49900,crossover,73,3,Diesel,yes,2011,Cayenne,full
+Porsche,50900,crossover,53,3.6,Petrol,yes,2013,Cayenne,full
+Porsche,99999,crossover,1,2.99,Diesel,yes,2016,Cayenne,full
+Mercedes-Benz,0,crossover,0,3,Diesel,yes,2016,GLE-Class,full
+Toyota,0,crossover,0,4.5,Diesel,yes,2016,Land Cruiser 200,full
+Toyota,102999,crossover,0,4.5,Diesel,yes,2016,Land Cruiser 200,full
+Audi,35900,crossover,143,3,Diesel,yes,2010,Q7,full
+Honda,16500,sedan,147,2.4,Petrol,yes,2009,Accord,front
+Toyota,103999,crossover,0,4.5,Diesel,yes,2016,Land Cruiser 200,full
+Porsche,114900,crossover,25,4.8,Petrol,yes,2013,Cayenne,full
+Porsche,26500,crossover,160,4.8,Petrol,yes,2008,Cayenne,full
+Mitsubishi,12999,crossover,140,2.4,Gas,yes,2007,Outlander XL,full

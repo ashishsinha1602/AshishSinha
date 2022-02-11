@@ -1,0 +1,22 @@
+car,price,body,mileage,engV,engType,registration,year,model,drive
+Audi,37000,sedan,37,2.8,Petrol,yes,2012,A6,full
+Mercedes-Benz,2.00E+05,van,19,3.5,Petrol,yes,2013,Sprinter 324 пасс.,rear
+Audi,3850,vagon,215,2.5,Diesel,no,2002,A6,front
+Nissan,13275,hatch,12,NA,Other,yes,2013,Leaf,front
+Mercedes-Benz,20400,sedan,190,1.8,Gas,yes,2011,E-Class,rear
+BMW,1900,sedan,300,2.5,Diesel,no,1997,5 Series,rear
+BMW,39333,sedan,6,2,Petrol,yes,2016,520,
+Mercedes-Benz,99999,crossover,0,2.99,Diesel,yes,2016,GLE-Class,full
+Mercedes-Benz,70999,crossover,0,2.2,Diesel,yes,2016,GLE-Class,full
+BMW,63500,crossover,1,2,Diesel,yes,2016,X5,full
+BMW,59900,crossover,30,2,Diesel,yes,2016,X5,full
+Mitsubishi,9200,crossover,110,2.4,Petrol,yes,2006,Outlander,full
+Nissan,20241.897,crossover,0,1.6,Petrol,yes,2015,Juke,front
+Mercedes-Benz,14490,vagon,212,2.2,Diesel,yes,2008,E-Class,rear
+Mercedes-Benz,31500,sedan,123,2.2,Diesel,yes,2011,E-Class,
+Mercedes-Benz,0,crossover,0,3,Diesel,yes,2016,GLE-Class,full
+Volkswagen,8999,sedan,120,1.9,Diesel,yes,2007,Passat B6,front
+Audi,3650,sedan,240,2.5,Diesel,no,2000,A6,front
+Nissan,17000,hatch,38,NA,Other,yes,2013,Leaf,front
+Mitsubishi,12000,sedan,121,2.4,Gas,yes,2009,Galant,front
+Kia,20633.886,crossover,0,1.7,Diesel,yes,2016,Sportage,front

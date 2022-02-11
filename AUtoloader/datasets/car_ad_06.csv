@@ -1,0 +1,21 @@
+car,price,body,mileage,engV,engType,registration,year,model,drive
+Volkswagen,20000,crossover,115,2.5,Diesel,yes,2008,Touareg,full
+BMW,2.10E+04,sedan,186,3,Petrol,yes,2007,530,rear
+Hyundai,11800,sedan,65,1.4,Petrol,yes,2013,Accent,front
+Mercedes-Benz,0,van,450,2.2,Diesel,yes,2000,Vito пасс.,front
+Volkswagen,10000,van,231,1.9,Diesel,yes,2005,T5 (Transporter) пасс.,
+Volkswagen,37990,crossover,140,3,Diesel,yes,2012,Touareg,full
+Porsche,0,crossover,0,3,Diesel,yes,2016,Cayenne,full
+BMW,3900,vagon,240,3,Diesel,no,2001,530,rear
+Volkswagen,3.35E+04,crossover,98,NA,Petrol,yes,2013,Touareg,full
+Hyundai,9700,sedan,54,1.4,Petrol,yes,2013,Accent,front
+Nissan,12400,hatch,26,NA,Other,yes,2011,Leaf,
+Mercedes-Benz,6200,sedan,221,1.8,Gas,yes,2004,E-Class,rear
+Renault,10500,vagon,185,1.5,Diesel,yes,2011,Megane,front
+Hyundai,6900,crossover,105,1.6,Petrol,yes,2009,Accent,front
+Mercedes-Benz,20300,sedan,198,1.8,Gas,yes,2011,E-Class,rear
+Audi,18500,crossover,185,3.6,Petrol,yes,2008,Q7,full
+Toyota,73900,crossover,1,4.5,Diesel,yes,2016,Land Cruiser 200,full
+Toyota,30500,crossover,40,2.7,Petrol,yes,2011,Land Cruiser Prado,full
+Toyota,30800,crossover,56,2.7,Gas,yes,2011,Land Cruiser Prado,full
+Toyota,25500,crossover,200,4,Petrol,yes,2007,Land Cruiser Prado,full
