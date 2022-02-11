@@ -1,0 +1,20 @@
+car,price,body,mileage,engV,engType,registration,year,model,drive
+BMW,73900,sedan,57,4.4,Petrol,yes,2013,M5,rear
+Land Rover,0,crossover,0,4.4,Diesel,yes,2016,Range Rover,full
+Nissan,26033.553,crossover,0,1.6,Diesel,yes,2016,X-Trail,full
+BMW,104999,crossover,2,3,Diesel,yes,2016,X5,full
+BMW,66500,crossover,1,2,Diesel,yes,2016,X5,full
+BMW,65099,crossover,0,2,Diesel,yes,2016,X5,full
+BMW,23900,crossover,235,3,Diesel,yes,2007,X5,full
+Mercedes-Benz,69999,crossover,0,2.2,Diesel,yes,2016,GLE-Class,full
+BMW,66200,crossover,70,3,Diesel,yes,2014,X5,full
+BMW,63000,crossover,0,2,Diesel,yes,2015,X5,full
+Mercedes-Benz,105999,crossover,0,2.98,Diesel,yes,2016,GLE-Class,full
+Nissan,13980,hatch,31,NA,Other,yes,2013,Leaf,front
+Nissan,17300,hatch,24,NA,Other,yes,2013,Leaf,front
+Volkswagen,10700,sedan,147,2,Petrol,yes,2007,Passat B6,front
+Audi,2600,vagon,273,2.5,Diesel,no,1999,A6,front
+Chrysler,13700,sedan,70,2.4,Petrol,yes,2008,Sebring,front
+Volkswagen,8999,sedan,120,2,Petrol,yes,2008,Passat B6,front
+Jaguar,18777,sedan,82,3,Petrol,yes,2008,XF,rear
+Audi,2850,sedan,260,NA,Other,no,1999,A6,

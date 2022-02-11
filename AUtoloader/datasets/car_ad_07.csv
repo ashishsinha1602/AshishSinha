@@ -1,0 +1,4 @@
+car,price,body,mileage,engV,engType,registration,year,model,drive
+Mercedes-Benz,29500,sedan,37,1.8,Petrol,yes,2012,E-Class,
+Opel,3.55E+03,vagon,231,2,Diesel,no,2005,Vectra C,front
+Volkswagen,0,van,162,2,Diesel,yes,2011,T5 (Transporter) груз,front

@@ -1,0 +1,21 @@
+car,price,body,mileage,engV,engType,registration,year,model,drive
+Honda,30000,sedan,52,3.5,Gas,yes,2014,Accord,front
+Porsche,2.69E+04,crossover,135,4.8,Petrol,yes,2008,Cayenne,full
+Toyota,80000,crossover,23,4.5,Diesel,yes,2014,Land Cruiser 200,full
+BMW,8500,sedan,260,2.2,Gas,yes,2001,520,rear
+Mercedes-Benz,7000,van,197,2.2,Diesel,yes,2002,Vito пасс.,front
+Audi,36000,crossover,145,3,Petrol,yes,2010,Q7,full
+Mercedes-Benz,9500,van,280,2.2,Diesel,yes,2005,Vito пасс.,rear
+Toyota,103999,crossover,0,4.5,Diesel,yes,2016,Land Cruiser 200,full
+Toyota,1.00E+05,crossover,0,4.5,Diesel,yes,2016,Land Cruiser 200,full
+Mercedes-Benz,16500,other,107,2.2,Diesel,yes,2010,Vito пасс.,front
+Toyota,15500,sedan,120,3.5,Petrol,yes,2008,Camry,front
+Porsche,0,sedan,22,4.8,Petrol,yes,2014,Panamera,full
+Mercedes-Benz,10999,van,191,2.2,Diesel,yes,2007,Vito пасс.,rear
+Audi,0,crossover,0,3,Diesel,yes,2015,Q7,full
+Audi,88888,crossover,0,3,Diesel,yes,2015,Q7,full
+Toyota,0,crossover,49,4.5,Diesel,yes,2014,Land Cruiser 200,full
+Mercedes-Benz,16500,van,223,2.2,Diesel,yes,2009,Vito пасс.,rear
+Volkswagen,17900,crossover,145,3,Diesel,yes,2007,Touareg,full
+Volkswagen,0,van,165,2,Diesel,yes,2013,T5 (Transporter) груз,front
+Mercedes-Benz,20400,sedan,190,1.8,Gas,yes,2011,E-Class,rear
