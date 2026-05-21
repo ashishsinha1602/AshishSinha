@@ -20,7 +20,20 @@
       "Bash(python _demo_run.py)",
       "Bash('/c/Program Files/PostgreSQL/17/bin/pg_ctl' -D /c/Users/sinha/AppData/Local/Temp/dbdet_pg -o '-p 5439' -l /c/Users/sinha/AppData/Local/Temp/dbdet_pg/log.txt restart -w)",
       "Bash(git init *)",
-      "Bash(git -c user.name=db-detective -c user.email=noreply@anthropic.com commit -q -m 'db-detective: autonomous data-health MCP server \\(Postgres + Oracle\\) *)"
+      "Bash(git -c user.name=db-detective -c user.email=noreply@anthropic.com commit -q -m 'db-detective: autonomous data-health MCP server \\(Postgres + Oracle\\) *)",
+      "Bash(python demo.py)",
+      "Bash(python webdemo.py)",
+      "Bash(curl -s http://localhost:8000/api/health)",
+      "Bash(curl -s \"http://localhost:8000/api/tool/check_freshness?table=fct_revenue_daily\")",
+      "Bash(curl -s http://localhost:8000/)",
+      "Bash(curl -s \"http://localhost:8000/api/tool/find_slow_queries?limit=3\")",
+      "Bash(gh auth *)",
+      "Bash(git ls-remote *)",
+      "Bash(git remote *)",
+      "Bash(git branch *)",
+      "Bash(git -c user.name=ashishsinha1602 -c user.email=sinha.ashish.4.u@gmail.com commit -q -m 'Point demo page links at the published repo branch *)",
+      "Bash(python -m py_compile webdemo.py)",
+      "Bash(git -c user.name=ashishsinha1602 -c user.email=sinha.ashish.4.u@gmail.com commit -q -m 'Add Render blueprint + auto-seed for one-click hosted live demo *)"
     ]
   }
 }
