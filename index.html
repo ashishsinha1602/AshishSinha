@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>db-detective — the AI data engineer that audits your database</title>
+<meta name="description" content="An open-source MCP server that turns any AI into a senior data engineer. It autonomously audits a Postgres or Oracle database — finding stale data, wasted spend, and silent schema rot." />
+<!-- Social preview -->
+<meta property="og:title" content="db-detective — the AI data engineer" />
+<meta property="og:description" content="Give Claude a database connection. Watch it diagnose stale data, wasted spend, and schema rot — autonomously." />
+<meta property="og:type" content="website" />
+<style>
+  :root{
+    --bg:#0a0c10; --panel:#11151c; --line:#1e2530; --ink:#e6e9ef;
+    --mut:#7b8696; --acc:#5eead4; --warn:#fbbf24; --bad:#f87171;
+    --good:#4ade80; --blue:#60a5fa;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:radial-gradient(900px 500px at 80% -10%,#15314033,transparent),
+               var(--bg);
+    color:var(--ink); font:15px/1.6 ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    min-height:100vh; padding:48px 20px;
+  }
+  .wrap{max-width:860px;margin:0 auto}
+  .badge{display:inline-block;font-size:12px;letter-spacing:.14em;
+    color:var(--acc);border:1px solid #1d3a36;background:#0d1b1a;
+    padding:5px 12px;border-radius:999px;text-transform:uppercase}
+  h1{font-size:38px;line-height:1.15;margin:18px 0 10px;letter-spacing:-.02em;
+    font-family:ui-sans-serif,system-ui,sans-serif;font-weight:800}
+  h1 .g{background:linear-gradient(100deg,#5eead4,#60a5fa);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{color:var(--mut);font-size:16px;max-width:620px}
+  .sub b{color:var(--ink);font-weight:600}
+  .terminal{margin:30px 0;background:var(--panel);border:1px solid var(--line);
+    border-radius:14px;overflow:hidden;box-shadow:0 30px 80px -40px #000}
+  .bar{display:flex;align-items:center;gap:7px;padding:11px 14px;
+    background:#0d1117;border-bottom:1px solid var(--line)}
+  .dot{width:11px;height:11px;border-radius:50%}
+  .bar .t{margin-left:10px;color:var(--mut);font-size:12.5px}
+  .screen{padding:18px 20px;min-height:340px;max-height:60vh;overflow:auto}
+  .ln{margin:3px 0;white-space:pre-wrap;word-break:break-word}
+  .you{color:var(--blue)}
+  .think{color:var(--mut);font-style:italic}
+  .tool{color:var(--acc)}
+  .tool .arg{color:var(--mut)}
+  .res{color:#aab4c4;border-left:2px solid var(--line);padding-left:12px;
+    margin:4px 0 4px 4px;font-size:13.5px}
+  .crit{color:var(--bad)}.warn{color:var(--warn)}.good{color:var(--good)}
+  .rep{color:var(--ink)}
+  .cursor{display:inline-block;width:8px;height:15px;background:var(--acc);
+    vertical-align:-2px;animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+  .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}
+  button,.link{font:inherit;font-size:14px;cursor:pointer;border-radius:10px;
+    padding:12px 20px;border:1px solid var(--line);text-decoration:none}
+  .run{background:linear-gradient(100deg,#5eead4,#60a5fa);color:#04201c;
+    border:none;font-weight:700}
+  .run:disabled{opacity:.45;cursor:default}
+  .link{background:#12161d;color:var(--ink)}
+  .link:hover{border-color:var(--acc)}
+  .feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+    gap:12px;margin-top:34px}
+  .feat{background:var(--panel);border:1px solid var(--line);border-radius:12px;
+    padding:16px}
+  .feat .h{color:var(--acc);font-weight:700;font-size:14px;margin-bottom:5px}
+  .feat .d{color:var(--mut);font-size:13px}
+  footer{color:var(--mut);font-size:13px;margin-top:40px;text-align:center}
+  footer a{color:var(--blue)}
+  .note{color:var(--mut);font-size:12.5px;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="badge">Open-source · MCP server</span>
+  <h1>The AI that audits your database<br><span class="g">like a senior data engineer.</span></h1>
+  <p class="sub"><b>db-detective</b> is a Model Context Protocol server. Point it at a
+  PostgreSQL or Oracle database, and any MCP-capable AI can autonomously hunt down
+  <b>stale data</b>, <b>wasted spend</b>, and <b>silent schema rot</b> — then write
+  the incident report. No dashboards. Just a connection string.</p>
+
+  <div class="terminal">
+    <div class="bar">
+      <span class="dot" style="background:#f87171"></span>
+      <span class="dot" style="background:#fbbf24"></span>
+      <span class="dot" style="background:#4ade80"></span>
+      <span class="t">claude  ·  mcp: db-detective  ·  analytics_prod</span>
+    </div>
+    <div class="screen" id="screen">
+      <div class="ln think">Press ▶ Run the investigation to watch the agent work.</div>
+    </div>
+  </div>
+
+  <div class="cta">
+    <button class="run" id="run">▶  Run the investigation</button>
+    <a class="link" id="repo" href="#">★  Get it on GitHub</a>
+    <a class="link" href="#install">⌘  Install in 60s</a>
+  </div>
+  <p class="note">This page replays a real db-detective session. The agent chose each
+  step itself — the server only hands it tools.</p>
+
+  <div class="feats">
+    <div class="feat"><div class="h">🔴 Pipeline doctor</div>
+      <div class="d">Finds timestamp columns and proves which tables stopped refreshing.</div></div>
+    <div class="feat"><div class="h">💸 Cost hunter</div>
+      <div class="d">Surfaces bloat, unused indexes and the slowest queries burning compute.</div></div>
+    <div class="feat"><div class="h">🗺️ SQL archaeologist</div>
+      <div class="d">Traces lineage and profiles every column of undocumented tables.</div></div>
+    <div class="feat"><div class="h">🔌 Postgres + Oracle</div>
+      <div class="d">One server, both engines — including Oracle Autonomous DB wallet connections.</div></div>
+  </div>
+
+  <div class="terminal" id="install" style="margin-top:34px">
+    <div class="bar"><span class="dot" style="background:#f87171"></span>
+      <span class="dot" style="background:#fbbf24"></span>
+      <span class="dot" style="background:#4ade80"></span>
+      <span class="t">install · 60 seconds</span></div>
+    <div class="screen" style="min-height:auto">
+<div class="ln res">git clone &lt;your-repo&gt;  &amp;&amp;  cd db-detective
+pip install -r requirements.txt
+cp .env.example .env        <span class="think"># add your DATABASE_URL or ORACLE_* vars</span>
+
+<span class="think"># then register it with Claude Desktop / Claude Code:</span>
+{
+  "mcpServers": {
+    "db-detective": { "command": "python", "args": ["server.py"] }
+  }
+}</div>
+    </div>
+  </div>
+
+  <footer>
+    Built with the Model Context Protocol · MIT licensed ·
+    <a href="#" id="repo2">source &amp; docs on GitHub</a>
+  </footer>
+</div>
+
+<script>
+// Scripted replay of a real db-detective investigation.
+const S = [
+ {c:'you', t:'You: /investigate the analytics_prod warehouse'},
+ {c:'think', t:'Thinking — I should get oriented before judging anything.'},
+ {c:'tool', t:'⚙ db_overview()'},
+ {c:'res',  t:'Engine: postgres · PostgreSQL 15.4 · size: 84 GB · 212 tables\nLargest: events_raw 41 GB · orders 12 GB · sessions 9 GB'},
+ {c:'tool', t:'⚙ list_tables(schema="public")'},
+ {c:'res',  t:'fct_revenue_daily   approx_rows 0     last_analyzed 14 days ago\ndim_customer        approx_rows 480k  last_analyzed today\nevents_raw          approx_rows 220M  last_analyzed today'},
+ {c:'think', t:'fct_revenue_daily has 0 rows and stale stats — a revenue table. That is a red flag. Checking freshness.'},
+ {c:'tool', t:'⚙ check_freshness(table="fct_revenue_daily")'},
+ {c:'res crit', t:'🔴 column "load_date": latest = 2026-05-07  (lag 14 days, 2:11:00) — STALE'},
+ {c:'think', t:'Confirmed: the daily revenue model has not loaded in 14 days. What feeds it?'},
+ {c:'tool', t:'⚙ trace_lineage(table="fct_revenue_daily")'},
+ {c:'res',  t:'→ depends on  orders (order_id) · dim_customer (customer_id)\norders.last_updated is current → upstream is healthy → the model job itself is broken.'},
+ {c:'tool', t:'⚙ find_waste()'},
+ {c:'res warn', t:'🩸 events_raw — 38M dead tuples (31% bloat) → ~12 GB reclaimable by VACUUM\n🗑️ 6 unused indexes · 2.4 GB of pure write overhead'},
+ {c:'tool', t:'⚙ find_slow_queries(limit=5)'},
+ {c:'res warn', t:'#1  total 4,210,880 ms · 91k calls · SELECT * FROM events_raw WHERE user_id = $1\n     (no index on events_raw.user_id — full 41 GB scan per call)'},
+ {c:'think', t:'I have enough. Writing the Data Health Report.'},
+ {c:'rep', t:'\n━━━  DATA HEALTH REPORT · analytics_prod  ━━━'},
+ {c:'crit', t:'🔴 CRITICAL\n  • fct_revenue_daily is 14 days stale. Upstream (orders) is fine —\n    the model job is failing silently. Revenue dashboards are wrong now.'},
+ {c:'warn', t:'💸 COST / WASTE\n  • events_raw: 31% bloat → reclaim ~12 GB with VACUUM FULL.\n  • The #1 query scans 41 GB/call, 91k times. One index ends ~70 min/day of compute.\n  • 6 unused indexes — drop to save 2.4 GB + write speed.'},
+ {c:'rep', t:'🧹 HYGIENE\n  • 14 tables never analyzed → optimizer is flying blind.'},
+ {c:'good', t:'✅ ACTION LIST (priced, copy-paste ready)\n  1. Re-run the fct_revenue_daily job — investigate the silent failure.\n  2. CREATE INDEX CONCURRENTLY ix_events_user ON events_raw(user_id);\n  3. VACUUM FULL events_raw;   -- ~12 GB back\n  4. DROP 6 unused indexes.   -- 2.4 GB + faster writes'},
+ {c:'rep', t:'\nInvestigation complete — 6 tool calls, 0 writes, ~30 seconds.'},
+];
+
+const screen = document.getElementById('screen');
+const btn = document.getElementById('run');
+const sleep = ms => new Promise(r=>setTimeout(r,ms));
+
+async function typeLine(node, text){
+  for(let i=0;i<text.length;i++){
+    node.textContent += text[i];
+    if(i%2===0) await sleep(text.length>120?4:9);
+  }
+}
+async function run(){
+  btn.disabled = true; screen.innerHTML = '';
+  for(const s of S){
+    const el = document.createElement('div');
+    el.className = 'ln ' + s.c;
+    screen.appendChild(el);
+    const cur = document.createElement('span');
+    cur.className='cursor'; el.appendChild(cur);
+    await typeLine(el, s.t);
+    el.removeChild(cur);
+    screen.scrollTop = screen.scrollHeight;
+    await sleep(s.c==='tool'?420:s.c==='res'||s.c.startsWith('res')?260:520);
+  }
+  btn.disabled = false; btn.textContent = '▶  Replay';
+}
+btn.addEventListener('click', run);
+
+// Point the GitHub links wherever you publish. Edit this one line.
+const REPO = 'https://github.com/your-username/db-detective';
+['repo','repo2'].forEach(id=>document.getElementById(id).href = REPO);
+</script>
+</body>
+</html>

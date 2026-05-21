@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(uv --version)",
+      "Bash(python -m py_compile server.py engines.py)",
+      "Bash(python -c \"import server; print\\('IMPORT OK -', len\\([t for t in dir\\(server\\) if not t.startswith\\('_'\\)]\\), 'symbols'\\); print\\('tools wired:', server.mcp.name\\)\")",
+      "Bash(which psql *)",
+      "Bash(psql --version)",
+      "Bash(echo \"psql:$\\(psql --version 2>/dev/null\\)\")",
+      "Bash(echo \"docker:$\\(docker --version 2>/dev/null\\)\")",
+      "Bash(git --version)",
+      "Bash('/c/Program Files/PostgreSQL/17/bin/initdb' -D /c/Users/sinha/AppData/Local/Temp/dbdet_pg -U postgres -A trust --encoding=UTF8)",
+      "Bash(export PGPASSWORD=x)",
+      "Bash('/c/Program Files/PostgreSQL/17/bin/createdb' -h localhost -p 5433 -U postgres analytics_demo)",
+      "Bash('/c/Program Files/PostgreSQL/17/bin/psql' -h localhost -p 5433 -U postgres -d analytics_demo -q -f c:/Users/sinha/New_proj/demo_seed.sql)",
+      "Bash('/c/Program Files/PostgreSQL/17/bin/pg_ctl' -D /c/Users/sinha/AppData/Local/Temp/dbdet_pg -o '-p 5439' -l /c/Users/sinha/AppData/Local/Temp/dbdet_pg/log.txt start)",
+      "Bash('/c/Program Files/PostgreSQL/17/bin/psql' -h 127.0.0.1 -p 5439 -U postgres -l)",
+      "Bash(python -c \"import psycopg; print\\('psycopg', psycopg.__version__\\)\")",
+      "Bash(python _setup_demo.py)",
+      "Bash(python _demo_run.py)",
+      "Bash('/c/Program Files/PostgreSQL/17/bin/pg_ctl' -D /c/Users/sinha/AppData/Local/Temp/dbdet_pg -o '-p 5439' -l /c/Users/sinha/AppData/Local/Temp/dbdet_pg/log.txt restart -w)",
+      "Bash(git init *)",
+      "Bash(git -c user.name=db-detective -c user.email=noreply@anthropic.com commit -q -m 'db-detective: autonomous data-health MCP server \\(Postgres + Oracle\\) *)"
+    ]
+  }
+}
