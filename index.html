@@ -84,9 +84,15 @@
   .feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
     gap:12px;margin-top:36px}
   .feat{border:1px solid var(--line);border-radius:12px;padding:16px;
-    background:var(--bg)}
+    background:var(--bg);cursor:pointer;transition:.12s;
+    display:flex;flex-direction:column}
+  .feat:hover{border-color:var(--ink);box-shadow:0 4px 14px -8px #0003;
+    transform:translateY(-1px)}
+  .feat:active{transform:translateY(0)}
   .feat .h{font-weight:700;font-size:14px;margin-bottom:4px}
-  .feat .d{color:var(--mut);font-size:13px}
+  .feat .d{color:var(--mut);font-size:13px;flex:1}
+  .feat .go{margin-top:10px;font-size:12px;font-weight:600;color:var(--accent)}
+  .featsHint{color:var(--faint);font-size:12.5px;margin:14px 0 0}
 
   footer{color:var(--faint);font-size:13px;margin-top:44px;
     border-top:1px solid var(--line);padding-top:20px}
@@ -120,15 +126,20 @@
   </div>
   <p class="note" id="note">Backend not detected — start it with <span class="mono">python webdemo.py</span>. Until then this runs in offline replay mode.</p>
 
+  <p class="featsHint">Click any capability below to run just that part of the investigation.</p>
   <div class="feats">
-    <div class="feat"><div class="h">Pipeline doctor</div>
-      <div class="d">Finds timestamp columns and proves which tables stopped refreshing.</div></div>
-    <div class="feat"><div class="h">Cost hunter</div>
-      <div class="d">Surfaces bloat, unused indexes and the slowest queries burning compute.</div></div>
-    <div class="feat"><div class="h">SQL archaeologist</div>
-      <div class="d">Traces lineage and profiles every column of undocumented tables.</div></div>
-    <div class="feat"><div class="h">Postgres + Oracle</div>
-      <div class="d">One server, both engines — including Oracle Autonomous DB wallets.</div></div>
+    <div class="feat" data-kit="pipeline"><div class="h">Pipeline doctor</div>
+      <div class="d">Finds timestamp columns and proves which tables stopped refreshing.</div>
+      <div class="go">▸ Run freshness check</div></div>
+    <div class="feat" data-kit="cost"><div class="h">Cost hunter</div>
+      <div class="d">Surfaces bloat, unused indexes and the slowest queries burning compute.</div>
+      <div class="go">▸ Run cost audit</div></div>
+    <div class="feat" data-kit="archaeology"><div class="h">SQL archaeologist</div>
+      <div class="d">Traces lineage and profiles every column of undocumented tables.</div>
+      <div class="go">▸ Run profile + lineage</div></div>
+    <div class="feat" data-kit="engine"><div class="h">Postgres + Oracle</div>
+      <div class="d">One server, both engines — including Oracle Autonomous DB wallets.</div>
+      <div class="go">▸ Show engine + tables</div></div>
   </div>
 
   <footer>
@@ -239,9 +250,26 @@ function synth(outputs){
   return findings;
 }
 
-async function run(){
-  btn.disabled = true; feed.innerHTML = ""; const outputs = [];
-  for(const step of PLAN){
+// each clickable capability runs a focused subset of the full plan
+const KITS = {
+  pipeline:    {title:"Pipeline doctor — is the data fresh?",      steps:[PLAN[0],PLAN[2]]},
+  cost:        {title:"Cost hunter — where is money leaking?",     steps:[PLAN[5],PLAN[6]]},
+  archaeology: {title:"SQL archaeologist — what is this schema?",   steps:[PLAN[3],PLAN[4]]},
+  engine:      {title:"Engine check — what are we connected to?",  steps:[PLAN[0],PLAN[1]]},
+};
+
+let running = false;
+
+async function runSteps(steps, title){
+  if(running) return;
+  running = true; btn.disabled = true; feed.innerHTML = "";
+  if(title){
+    const h = document.createElement("div");
+    h.className = "think"; h.style.fontSize = "13px"; h.textContent = title;
+    feed.appendChild(h);
+  }
+  const outputs = [];
+  for(const step of steps){
     const box = document.createElement("div");
     box.className = "step";
     box.innerHTML = `<div class="think">${esc(step.think)}</div>
@@ -262,15 +290,27 @@ async function run(){
   rep.innerHTML = "<h3>🔎 Data Health Report</h3><ul>" +
     (findings.length
       ? findings.map(([c,t])=>`<li class="tag-${c}">${esc(t)}</li>`).join("")
-      : "<li>No critical issues found.</li>") +
+      : "<li>No critical issues found in this scan.</li>") +
     "</ul>";
   feed.appendChild(rep);
   feed.scrollTop = feed.scrollHeight;
-  btn.disabled = false; btn.textContent = "Run again";
+  running = false; btn.disabled = false; btn.textContent = "Run again";
 }
+
+const run = () => runSteps(PLAN, "Full autonomous investigation");
 
 probe();
 btn.addEventListener("click", run);
+
+// make the four capability boxes clickable
+document.querySelectorAll(".feat").forEach(card => {
+  card.addEventListener("click", () => {
+    const kit = KITS[card.dataset.kit];
+    if(!kit) return;
+    document.querySelector(".panel").scrollIntoView({behavior:"smooth", block:"start"});
+    runSteps(kit.steps, kit.title);
+  });
+});
 </script>
 </body>
 </html>
