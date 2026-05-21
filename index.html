@@ -9,142 +9,341 @@
 <meta property="og:description" content="Give an AI a database connection. Watch it diagnose stale data, wasted spend and schema rot — live." />
 <style>
   :root{
-    --bg:#ffffff; --soft:#f6f7f8; --soft2:#eef0f2; --line:#e3e5e8;
-    --ink:#1f2328; --mut:#6b7280; --faint:#9aa1ab;
-    --accent:#2563eb; --crit:#c2410c; --warn:#b45309; --good:#15803d;
+    --bg:#ffffff; --soft:#f7f8f9; --soft2:#eef0f2; --line:#e4e6e9;
+    --line2:#d6d9dd; --ink:#0e1116; --ink2:#3a3f47; --mut:#646b75;
+    --faint:#9aa1ab; --accent:#4f46e5; --accent-soft:#eef0fe;
+    --crit:#dc2626; --warn:#d97706; --good:#16a34a;
+    --shadow:0 1px 2px #0e111608, 0 8px 24px -12px #0e111618;
+    --shadow-lg:0 1px 2px #0e111608, 0 24px 48px -20px #0e11162e;
   }
   *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
   body{background:var(--bg);color:var(--ink);
-    font:15px/1.65 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-    -webkit-font-smoothing:antialiased}
-  .wrap{max-width:880px;margin:0 auto;padding:56px 22px 80px}
+    font:15px/1.65 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body::before{content:"";position:fixed;inset:0 0 auto 0;height:520px;z-index:-1;
+    background-image:radial-gradient(circle,#e7e9ec 1px,transparent 1.4px);
+    background-size:24px 24px;
+    -webkit-mask-image:linear-gradient(180deg,#000,transparent);
+    mask-image:linear-gradient(180deg,#000,transparent)}
   .mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+  a{color:inherit}
+  .wrap{max-width:980px;margin:0 auto;padding:0 24px}
 
-  .badge{display:inline-block;font-size:11.5px;letter-spacing:.12em;
-    text-transform:uppercase;color:var(--mut);background:var(--soft);
-    border:1px solid var(--line);padding:5px 11px;border-radius:999px}
-  h1{font-size:40px;line-height:1.12;letter-spacing:-.022em;font-weight:800;
-    margin:18px 0 12px}
-  h1 span{color:var(--mut)}
-  .sub{color:var(--mut);font-size:16.5px;max-width:640px}
-  .sub b{color:var(--ink);font-weight:600}
+  /* entrance animation */
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .rise{animation:rise .7s cubic-bezier(.2,.7,.2,1) both}
+  .d1{animation-delay:.05s}.d2{animation-delay:.12s}.d3{animation-delay:.19s}
+  .d4{animation-delay:.26s}.d5{animation-delay:.33s}
 
-  .panel{margin:30px 0;border:1px solid var(--line);border-radius:14px;
-    background:var(--bg);overflow:hidden}
-  .phead{display:flex;align-items:center;gap:9px;padding:12px 16px;
-    background:var(--soft);border-bottom:1px solid var(--line);
-    font-size:13px;color:var(--mut)}
-  .phead .dot{width:9px;height:9px;border-radius:50%;background:#cdd2d8}
-  .phead .live{margin-left:auto;display:flex;align-items:center;gap:6px;
-    color:var(--faint)}
-  .phead .live.on{color:var(--good)}
-  .phead .live i{width:7px;height:7px;border-radius:50%;
-    background:currentColor;display:inline-block}
-  .feed{padding:14px 16px;min-height:280px;max-height:62vh;overflow:auto}
-  .empty{color:var(--faint);font-size:14px;padding:24px 4px}
+  /* nav */
+  nav{display:flex;align-items:center;justify-content:space-between;
+    padding:22px 0 6px}
+  .logo{display:flex;align-items:center;gap:9px;font-weight:700;font-size:15px;
+    letter-spacing:-.01em}
+  .logo .mark{width:26px;height:26px;border-radius:8px;display:grid;
+    place-items:center;background:var(--ink);color:#fff;font-size:14px}
+  .navlink{font-size:13.5px;color:var(--mut);text-decoration:none;
+    border:1px solid var(--line);padding:7px 14px;border-radius:8px;
+    transition:.14s;background:#fff}
+  .navlink:hover{border-color:var(--ink);color:var(--ink)}
 
-  .step{margin:8px 0 16px}
-  .think{color:var(--mut);font-size:14px;font-style:italic;margin-bottom:6px}
-  .think::before{content:"›  ";color:var(--faint);font-style:normal}
-  .call{display:inline-flex;align-items:center;gap:7px;font-size:13px;
-    background:var(--soft);border:1px solid var(--line);border-radius:7px;
-    padding:5px 10px;color:var(--ink)}
-  .call .k{color:var(--accent)}
-  .out{margin-top:8px;border-left:2px solid var(--soft2);padding-left:14px}
-  .spin{color:var(--faint);font-size:13px}
+  /* hero */
+  header{padding:54px 0 8px}
+  .badge{display:inline-flex;align-items:center;gap:8px;font-size:12px;
+    font-weight:600;letter-spacing:.01em;color:var(--accent);
+    background:var(--accent-soft);border:1px solid #dcdcfb;
+    padding:6px 13px;border-radius:999px}
+  .badge .pip{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+  h1{font-size:clamp(34px,5.6vw,56px);line-height:1.06;font-weight:800;
+    letter-spacing:-.032em;margin:20px 0 0;
+    background:linear-gradient(176deg,#0e1116 35%,#454b54);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  h1 .accent{background:linear-gradient(176deg,#4f46e5,#7c74f1);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{color:var(--mut);font-size:clamp(16px,2vw,18.5px);max-width:600px;
+    margin-top:18px}
+  .sub b{color:var(--ink2);font-weight:600}
+  .herocta{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:26px}
+  .btn{font:inherit;font-size:14.5px;font-weight:600;cursor:pointer;
+    border-radius:10px;padding:13px 22px;text-decoration:none;
+    border:1px solid var(--line);transition:.15s;display:inline-flex;
+    align-items:center;gap:8px}
+  .btn-primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+  .btn-ghost{background:#fff;color:var(--ink)}
+  .btn-ghost:hover{border-color:var(--ink)}
 
-  .out h3{font-size:14px;margin:6px 0 4px}
-  .out p{font-size:14px;margin:2px 0;color:var(--ink)}
-  .out ul{margin:4px 0 4px 18px}
-  .out li{font-size:14px}
+  /* stats strip */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+    background:var(--line);border:1px solid var(--line);border-radius:14px;
+    overflow:hidden;margin-top:40px}
+  .stat{background:#fff;padding:18px 20px}
+  .stat .n{font-size:24px;font-weight:800;letter-spacing:-.02em}
+  .stat .l{font-size:12.5px;color:var(--mut);margin-top:2px}
+
+  /* section */
+  section{padding:64px 0 0}
+  .eyebrow{font-size:12.5px;font-weight:700;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--accent)}
+  h2{font-size:clamp(24px,3.4vw,32px);font-weight:800;letter-spacing:-.025em;
+    margin:10px 0 8px}
+  .lead{color:var(--mut);font-size:16px;max-width:620px}
+
+  /* terminal panel */
+  .panel{margin:26px 0 0;border:1px solid var(--line);border-radius:16px;
+    background:#fff;overflow:hidden;box-shadow:var(--shadow-lg)}
+  .phead{display:flex;align-items:center;gap:8px;padding:13px 16px;
+    background:linear-gradient(180deg,#fbfbfc,#f5f6f7);
+    border-bottom:1px solid var(--line)}
+  .phead .dot{width:11px;height:11px;border-radius:50%}
+  .phead .dot:nth-child(1){background:#f0625a}
+  .phead .dot:nth-child(2){background:#f5bd4f}
+  .phead .dot:nth-child(3){background:#5bc466}
+  .phead .ttl{margin-left:8px;font-size:12.5px;color:var(--mut)}
+  .live{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12px;
+    font-weight:600;color:var(--faint);background:#fff;border:1px solid var(--line);
+    padding:5px 11px;border-radius:999px}
+  .live i{width:7px;height:7px;border-radius:50%;background:currentColor;
+    display:inline-block}
+  .live.on{color:var(--good)}
+  .live.on i{box-shadow:0 0 0 0 #16a34a66;animation:pulse 1.8s infinite}
+  @keyframes pulse{70%{box-shadow:0 0 0 7px #16a34a00}100%{box-shadow:0 0 0 0 #16a34a00}}
+  .feed{padding:18px 20px;min-height:320px;max-height:64vh;overflow:auto;
+    background:
+      linear-gradient(#fff 30%,#fff0),
+      linear-gradient(#fff0,#fff 70%) 0 100%,
+      radial-gradient(farthest-side at 50% 0,#0e11160d,#fff0),
+      radial-gradient(farthest-side at 50% 100%,#0e11160d,#fff0) 0 100%;
+    background-repeat:no-repeat;background-size:100% 26px,100% 26px,100% 10px,100% 10px;
+    background-attachment:local,local,scroll,scroll}
+  .empty{color:var(--faint);font-size:14.5px;padding:48px 8px;text-align:center}
+  .empty b{color:var(--ink2)}
+
+  .step{margin:4px 0 20px;animation:rise .4s ease both}
+  .think{color:var(--mut);font-size:14px;margin-bottom:8px;line-height:1.5}
+  .think::before{content:"";display:inline-block;width:14px;height:14px;
+    margin-right:7px;vertical-align:-2px;border-radius:4px;
+    background:var(--accent-soft);
+    background-image:linear-gradient(135deg,#4f46e5,#7c74f1);opacity:.9}
+  .call{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;
+    font-family:ui-monospace,Menlo,Consolas,monospace;
+    background:#0e1116;color:#e8e9ec;border-radius:8px;padding:7px 12px}
+  .call .k{color:#9b94f5}
+  .out{margin-top:10px;border-left:2px solid var(--soft2);padding-left:16px}
+  .spin{color:var(--faint);font-size:13px;display:inline-flex;align-items:center;
+    gap:8px}
+  .spin::before{content:"";width:12px;height:12px;border-radius:50%;
+    border:2px solid var(--line2);border-top-color:var(--accent);
+    display:inline-block;animation:spin .6s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  .out h3{font-size:13.5px;margin:8px 0 5px;font-weight:700}
+  .out p{font-size:14px;margin:2px 0;color:var(--ink2)}
+  .out ul{margin:5px 0 5px 2px;list-style:none}
+  .out li{font-size:14px;padding-left:14px;position:relative}
+  .out li::before{content:"";position:absolute;left:0;top:9px;width:5px;height:5px;
+    border-radius:50%;background:var(--line2)}
   .tag-crit{color:var(--crit);font-weight:600}
   .tag-warn{color:var(--warn);font-weight:600}
   .tag-good{color:var(--good);font-weight:600}
-  table.t{border-collapse:collapse;margin:6px 0;font-size:12.5px;width:100%}
-  table.t th,table.t td{border:1px solid var(--line);padding:4px 9px;
-    text-align:left}
-  table.t th{background:var(--soft);font-weight:600;color:var(--mut)}
-  table.t td{color:var(--ink)}
+  table.t{border-collapse:separate;border-spacing:0;margin:8px 0;font-size:12.5px;
+    width:100%;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+  table.t th,table.t td{padding:7px 11px;text-align:left;
+    border-bottom:1px solid var(--line)}
+  table.t tr:last-child td{border-bottom:0}
+  table.t th{background:var(--soft);font-weight:600;color:var(--mut);
+    font-size:11.5px;letter-spacing:.02em;text-transform:uppercase}
+  table.t td{color:var(--ink2);font-family:ui-monospace,Menlo,Consolas,monospace}
+  table.t tr:nth-child(even) td{background:#fcfcfd}
 
-  .report{border:1px solid var(--line);border-radius:12px;background:var(--soft);
-    padding:18px 20px;margin-top:10px}
-  .report h3{font-size:15px;margin-bottom:8px}
-  .report ul{margin-left:18px}
-  .report li{font-size:14px;margin:3px 0}
+  .report{border:1px solid var(--line);border-radius:13px;
+    background:linear-gradient(180deg,#fbfbfc,#f6f7f8);
+    padding:18px 20px;margin-top:14px;box-shadow:var(--shadow)}
+  .report h3{font-size:15px;margin-bottom:10px;font-weight:800;
+    letter-spacing:-.01em}
+  .report ul{list-style:none}
+  .report li{font-size:14px;margin:6px 0;padding-left:20px;position:relative;
+    line-height:1.5}
+  .report li::before{content:"";position:absolute;left:0;top:6px;width:9px;
+    height:9px;border-radius:3px;background:currentColor;opacity:.85}
 
-  .cta{display:flex;gap:11px;flex-wrap:wrap;align-items:center;margin-top:8px}
-  button,.link{font:inherit;font-size:14px;cursor:pointer;border-radius:9px;
-    padding:11px 20px;text-decoration:none;border:1px solid var(--line)}
-  .run{background:var(--ink);color:#fff;border-color:var(--ink);font-weight:600}
-  .run:disabled{opacity:.4;cursor:default}
-  .link{background:var(--bg);color:var(--ink)}
-  .link:hover{border-color:var(--mut)}
-  .note{color:var(--faint);font-size:12.5px;margin-top:9px}
+  .runrow{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:18px}
+  .run{font:inherit;font-size:15px;font-weight:700;cursor:pointer;
+    border-radius:11px;padding:14px 26px;border:none;color:#fff;
+    background:linear-gradient(180deg,#23262d,#0e1116);
+    box-shadow:0 1px 2px #0e111633,0 10px 22px -10px #0e111680;transition:.15s}
+  .run:hover{transform:translateY(-1px);
+    box-shadow:0 1px 2px #0e111633,0 16px 30px -12px #0e111699}
+  .run:active{transform:translateY(0)}
+  .run:disabled{opacity:.45;cursor:default;transform:none;box-shadow:none}
+  .note{color:var(--mut);font-size:13px;max-width:430px}
+  .note .mono{background:var(--soft);border:1px solid var(--line);
+    padding:1px 6px;border-radius:5px;font-size:12px}
 
-  .feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-    gap:12px;margin-top:36px}
-  .feat{border:1px solid var(--line);border-radius:12px;padding:16px;
-    background:var(--bg);cursor:pointer;transition:.12s;
-    display:flex;flex-direction:column}
-  .feat:hover{border-color:var(--ink);box-shadow:0 4px 14px -8px #0003;
-    transform:translateY(-1px)}
-  .feat:active{transform:translateY(0)}
-  .feat .h{font-weight:700;font-size:14px;margin-bottom:4px}
-  .feat .d{color:var(--mut);font-size:13px;flex:1}
-  .feat .go{margin-top:10px;font-size:12px;font-weight:600;color:var(--accent)}
-  .featsHint{color:var(--faint);font-size:12.5px;margin:14px 0 0}
+  /* capability cards */
+  .featsHint{color:var(--mut);font-size:14px;margin:42px 0 14px;font-weight:600}
+  .feats{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .feat{position:relative;border:1px solid var(--line);border-radius:14px;
+    padding:20px;background:#fff;cursor:pointer;transition:.16s;
+    display:flex;flex-direction:column;overflow:hidden}
+  .feat::after{content:"";position:absolute;left:0;right:0;top:0;height:3px;
+    background:linear-gradient(90deg,#4f46e5,#7c74f1);transform:scaleX(0);
+    transform-origin:left;transition:.2s}
+  .feat:hover{border-color:var(--line2);box-shadow:var(--shadow-lg);
+    transform:translateY(-3px)}
+  .feat:hover::after{transform:scaleX(1)}
+  .feat:active{transform:translateY(-1px)}
+  .feat .num{position:absolute;top:16px;right:18px;font-size:12px;
+    font-weight:700;color:var(--faint);font-family:ui-monospace,monospace}
+  .feat .ic{width:42px;height:42px;border-radius:11px;display:grid;
+    place-items:center;font-size:20px;background:var(--accent-soft);
+    border:1px solid #e3e3fb;margin-bottom:13px}
+  .feat .h{font-weight:700;font-size:15.5px;letter-spacing:-.01em}
+  .feat .d{color:var(--mut);font-size:13.5px;margin-top:5px;flex:1}
+  .feat .go{margin-top:14px;font-size:13px;font-weight:700;color:var(--accent);
+    display:inline-flex;align-items:center;gap:6px}
+  .feat .go .arr{transition:.16s}
+  .feat:hover .go .arr{transform:translateX(4px)}
 
-  footer{color:var(--faint);font-size:13px;margin-top:44px;
-    border-top:1px solid var(--line);padding-top:20px}
+  /* install */
+  .code{margin-top:24px;border:1px solid var(--line);border-radius:14px;
+    overflow:hidden;box-shadow:var(--shadow)}
+  .code .phead .ttl{margin-left:8px}
+  .code pre{margin:0;padding:18px 20px;background:#0e1116;color:#d6d8de;
+    font:13px/1.7 ui-mono,ui-monospace,Menlo,Consolas,monospace;overflow-x:auto}
+  .code .c{color:#7f8794}
+  .code .g{color:#9b94f5}
+
+  /* footer */
+  footer{margin-top:72px;border-top:1px solid var(--line);padding:26px 0 60px;
+    display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    color:var(--faint);font-size:13px}
   footer a{color:var(--accent);text-decoration:none}
+
+  @media(max-width:640px){
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .feats{grid-template-columns:1fr}
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <span class="badge">Open-source · MCP server</span>
-  <h1>The AI that audits your database<br><span>like a senior data engineer.</span></h1>
-  <p class="sub"><b>db-detective</b> is a Model Context Protocol server. Point it at a
-  PostgreSQL or Oracle database and any AI can autonomously hunt down <b>stale
-  data</b>, <b>wasted spend</b> and <b>silent schema rot</b> — then write the report.</p>
+  <nav class="rise">
+    <div class="logo"><span class="mark">🕵</span> db-detective</div>
+    <a class="navlink" id="repo" href="#" target="_blank" rel="noopener">★ Star on GitHub</a>
+  </nav>
 
-  <div class="panel">
-    <div class="phead">
-      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-      <span class="mono">db-detective · investigation</span>
-      <span class="live" id="live"><i></i><span id="liveText">offline</span></span>
+  <header>
+    <span class="badge rise d1"><span class="pip"></span>Open-source · Model Context Protocol</span>
+    <h1 class="rise d2">The AI that audits your database<br>
+      like a <span class="accent">senior data engineer.</span></h1>
+    <p class="sub rise d3"><b>db-detective</b> is an MCP server. Point it at a
+      PostgreSQL or Oracle database and any AI can autonomously hunt down
+      <b>stale data</b>, <b>wasted spend</b> and <b>silent schema rot</b> — then
+      write the incident report.</p>
+    <div class="herocta rise d4">
+      <a class="btn btn-primary" href="#demo">▶ Watch it investigate</a>
+      <a class="btn btn-ghost" id="repo3" href="#" target="_blank" rel="noopener">View the code</a>
     </div>
-    <div class="feed" id="feed">
-      <div class="empty">Press <b>Run the investigation</b> — the agent will query a
-      live database and show real results.</div>
+    <div class="stats rise d5">
+      <div class="stat"><div class="n">8</div><div class="l">agentic tools</div></div>
+      <div class="stat"><div class="n">0</div><div class="l">writes — read-only</div></div>
+      <div class="stat"><div class="n">2</div><div class="l">engines · PG + Oracle</div></div>
+      <div class="stat"><div class="n">~30s</div><div class="l">to a full audit</div></div>
     </div>
-  </div>
+  </header>
 
-  <div class="cta">
-    <button class="run" id="run">Run the investigation</button>
-    <a class="link" id="repo" href="#">View source on GitHub</a>
-  </div>
-  <p class="note" id="note">Backend not detected — start it with <span class="mono">python webdemo.py</span>. Until then this runs in offline replay mode.</p>
+  <section id="demo">
+    <div class="eyebrow">Live demo</div>
+    <h2>Watch the agent investigate — for real</h2>
+    <p class="lead">This isn't a video. The page calls a real database and shows
+      real query results. Run the full audit, or click one capability below.</p>
 
-  <p class="featsHint">Click any capability below to run just that part of the investigation.</p>
-  <div class="feats">
-    <div class="feat" data-kit="pipeline"><div class="h">Pipeline doctor</div>
-      <div class="d">Finds timestamp columns and proves which tables stopped refreshing.</div>
-      <div class="go">▸ Run freshness check</div></div>
-    <div class="feat" data-kit="cost"><div class="h">Cost hunter</div>
-      <div class="d">Surfaces bloat, unused indexes and the slowest queries burning compute.</div>
-      <div class="go">▸ Run cost audit</div></div>
-    <div class="feat" data-kit="archaeology"><div class="h">SQL archaeologist</div>
-      <div class="d">Traces lineage and profiles every column of undocumented tables.</div>
-      <div class="go">▸ Run profile + lineage</div></div>
-    <div class="feat" data-kit="engine"><div class="h">Postgres + Oracle</div>
-      <div class="d">One server, both engines — including Oracle Autonomous DB wallets.</div>
-      <div class="go">▸ Show engine + tables</div></div>
-  </div>
+    <div class="panel">
+      <div class="phead">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <span class="ttl mono">db-detective — investigation session</span>
+        <span class="live" id="live"><i></i><span id="liveText">offline</span></span>
+      </div>
+      <div class="feed" id="feed">
+        <div class="empty">Press <b>Run the investigation</b> — the agent will
+          query a live database and show real results, step by step.</div>
+      </div>
+    </div>
+
+    <div class="runrow">
+      <button class="run" id="run">▶  Run the investigation</button>
+      <p class="note" id="note">Backend not detected — start it with
+        <span class="mono">python webdemo.py</span>. Running in offline replay mode.</p>
+    </div>
+
+    <p class="featsHint">Or run one focused investigation:</p>
+    <div class="feats">
+      <div class="feat" data-kit="pipeline">
+        <span class="num">01</span>
+        <div class="ic">🩺</div>
+        <div class="h">Pipeline doctor</div>
+        <div class="d">Finds timestamp columns and proves which tables silently
+          stopped refreshing.</div>
+        <span class="go">Run freshness check <span class="arr">→</span></span>
+      </div>
+      <div class="feat" data-kit="cost">
+        <span class="num">02</span>
+        <div class="ic">💸</div>
+        <div class="h">Cost hunter</div>
+        <div class="d">Surfaces bloat, unused indexes and the slowest queries
+          quietly burning compute.</div>
+        <span class="go">Run cost audit <span class="arr">→</span></span>
+      </div>
+      <div class="feat" data-kit="archaeology">
+        <span class="num">03</span>
+        <div class="ic">🗺️</div>
+        <div class="h">SQL archaeologist</div>
+        <div class="d">Profiles columns for data-quality gaps and traces lineage
+          across an undocumented schema.</div>
+        <span class="go">Run profile + lineage <span class="arr">→</span></span>
+      </div>
+      <div class="feat" data-kit="engine">
+        <span class="num">04</span>
+        <div class="ic">🔌</div>
+        <div class="h">Postgres + Oracle</div>
+        <div class="d">One toolkit, both engines — including Oracle Autonomous
+          DB wallet connections.</div>
+        <span class="go">Show engine + tables <span class="arr">→</span></span>
+      </div>
+    </div>
+  </section>
+
+  <section id="install">
+    <div class="eyebrow">Install</div>
+    <h2>Sixty seconds to your own AI data engineer</h2>
+    <p class="lead">Clone it, point it at any database, and register it with your
+      MCP client. The agent gets the toolkit; you get the report.</p>
+    <div class="code">
+      <div class="phead">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <span class="ttl mono">setup</span>
+      </div>
+<pre><span class="c"># 1 — get it</span>
+git clone https://github.com/ashishsinha1602/AshishSinha
+pip install -r requirements.txt
+
+<span class="c"># 2 — point at any database (Postgres or Oracle wallet)</span>
+cp .env.example .env   <span class="c"># add DATABASE_URL or ORACLE_* vars</span>
+
+<span class="c"># 3 — register with Claude Desktop / Claude Code</span>
+<span class="g">{ "mcpServers": { "db-detective":</span>
+<span class="g">  { "command": "python", "args": ["server.py"] } } }</span>
+
+<span class="c"># then just say:</span>  /investigate the database</pre>
+    </div>
+  </section>
 
   <footer>
-    Built on the Model Context Protocol · MIT licensed ·
-    <a href="#" id="repo2">source &amp; docs</a>
+    <span>Built on the Model Context Protocol · MIT licensed · © 2026 Ashish Sinha</span>
+    <a href="#" id="repo2" target="_blank" rel="noopener">Source &amp; docs on GitHub →</a>
   </footer>
 </div>
 
@@ -152,6 +351,7 @@
 const REPO = "https://github.com/ashishsinha1602/AshishSinha/tree/db-detective";
 document.getElementById("repo").href = REPO;
 document.getElementById("repo2").href = REPO;
+document.getElementById("repo3").href = REPO;
 
 // The investigation plan. Each step = a thought + a real tool call.
 const PLAN = [
@@ -193,7 +393,7 @@ async function probe(){
   }catch(e){ backendUp = false; }
   liveEl.classList.toggle("on", backendUp);
   liveText.textContent = backendUp ? "live database" : "offline replay";
-  if(backendUp) note.textContent = "Connected to a live database via webdemo.py — every number below is a real query result.";
+  if(backendUp) note.textContent = "Connected to a live database — every number below is a real query result.";
 }
 
 // minimal markdown renderer: headings, bold, bullets, tables
@@ -369,7 +569,7 @@ async function runSteps(steps, title, reporter){
     box.className = "step";
     box.innerHTML = `<div class="think">${esc(step.think)}</div>
       <span class="call"><span class="k">⚙</span>${step.tool}(${step.q?esc(step.q):""})</span>
-      <div class="out"><span class="spin">querying…</span></div>`;
+      <div class="out"><span class="spin">querying the database…</span></div>`;
     feed.appendChild(box);
     feed.scrollTop = feed.scrollHeight;
     await sleep(400);
@@ -387,7 +587,7 @@ async function runSteps(steps, title, reporter){
     + "</ul>";
   feed.appendChild(rep);
   feed.scrollTop = feed.scrollHeight;
-  running = false; btn.disabled = false; btn.textContent = "Run again";
+  running = false; btn.disabled = false; btn.textContent = "▶  Run again";
 }
 
 const run = () => runSteps(PLAN, "Full autonomous investigation", fullReport);
