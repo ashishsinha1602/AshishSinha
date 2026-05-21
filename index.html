@@ -4,196 +4,273 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>db-detective — the AI data engineer that audits your database</title>
-<meta name="description" content="An open-source MCP server that turns any AI into a senior data engineer. It autonomously audits a Postgres or Oracle database — finding stale data, wasted spend, and silent schema rot." />
-<!-- Social preview -->
+<meta name="description" content="An open-source MCP server that turns any AI into a senior data engineer — autonomously auditing a Postgres or Oracle database for stale data, wasted spend and schema rot." />
 <meta property="og:title" content="db-detective — the AI data engineer" />
-<meta property="og:description" content="Give Claude a database connection. Watch it diagnose stale data, wasted spend, and schema rot — autonomously." />
-<meta property="og:type" content="website" />
+<meta property="og:description" content="Give an AI a database connection. Watch it diagnose stale data, wasted spend and schema rot — live." />
 <style>
   :root{
-    --bg:#0a0c10; --panel:#11151c; --line:#1e2530; --ink:#e6e9ef;
-    --mut:#7b8696; --acc:#5eead4; --warn:#fbbf24; --bad:#f87171;
-    --good:#4ade80; --blue:#60a5fa;
+    --bg:#ffffff; --soft:#f6f7f8; --soft2:#eef0f2; --line:#e3e5e8;
+    --ink:#1f2328; --mut:#6b7280; --faint:#9aa1ab;
+    --accent:#2563eb; --crit:#c2410c; --warn:#b45309; --good:#15803d;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  body{
-    background:radial-gradient(900px 500px at 80% -10%,#15314033,transparent),
-               var(--bg);
-    color:var(--ink); font:15px/1.6 ui-monospace,"SF Mono",Menlo,Consolas,monospace;
-    min-height:100vh; padding:48px 20px;
-  }
-  .wrap{max-width:860px;margin:0 auto}
-  .badge{display:inline-block;font-size:12px;letter-spacing:.14em;
-    color:var(--acc);border:1px solid #1d3a36;background:#0d1b1a;
-    padding:5px 12px;border-radius:999px;text-transform:uppercase}
-  h1{font-size:38px;line-height:1.15;margin:18px 0 10px;letter-spacing:-.02em;
-    font-family:ui-sans-serif,system-ui,sans-serif;font-weight:800}
-  h1 .g{background:linear-gradient(100deg,#5eead4,#60a5fa);
-    -webkit-background-clip:text;background-clip:text;color:transparent}
-  .sub{color:var(--mut);font-size:16px;max-width:620px}
+  body{background:var(--bg);color:var(--ink);
+    font:15px/1.65 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:56px 22px 80px}
+  .mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+
+  .badge{display:inline-block;font-size:11.5px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--mut);background:var(--soft);
+    border:1px solid var(--line);padding:5px 11px;border-radius:999px}
+  h1{font-size:40px;line-height:1.12;letter-spacing:-.022em;font-weight:800;
+    margin:18px 0 12px}
+  h1 span{color:var(--mut)}
+  .sub{color:var(--mut);font-size:16.5px;max-width:640px}
   .sub b{color:var(--ink);font-weight:600}
-  .terminal{margin:30px 0;background:var(--panel);border:1px solid var(--line);
-    border-radius:14px;overflow:hidden;box-shadow:0 30px 80px -40px #000}
-  .bar{display:flex;align-items:center;gap:7px;padding:11px 14px;
-    background:#0d1117;border-bottom:1px solid var(--line)}
-  .dot{width:11px;height:11px;border-radius:50%}
-  .bar .t{margin-left:10px;color:var(--mut);font-size:12.5px}
-  .screen{padding:18px 20px;min-height:340px;max-height:60vh;overflow:auto}
-  .ln{margin:3px 0;white-space:pre-wrap;word-break:break-word}
-  .you{color:var(--blue)}
-  .think{color:var(--mut);font-style:italic}
-  .tool{color:var(--acc)}
-  .tool .arg{color:var(--mut)}
-  .res{color:#aab4c4;border-left:2px solid var(--line);padding-left:12px;
-    margin:4px 0 4px 4px;font-size:13.5px}
-  .crit{color:var(--bad)}.warn{color:var(--warn)}.good{color:var(--good)}
-  .rep{color:var(--ink)}
-  .cursor{display:inline-block;width:8px;height:15px;background:var(--acc);
-    vertical-align:-2px;animation:blink 1s steps(1) infinite}
-  @keyframes blink{50%{opacity:0}}
-  .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}
-  button,.link{font:inherit;font-size:14px;cursor:pointer;border-radius:10px;
-    padding:12px 20px;border:1px solid var(--line);text-decoration:none}
-  .run{background:linear-gradient(100deg,#5eead4,#60a5fa);color:#04201c;
-    border:none;font-weight:700}
-  .run:disabled{opacity:.45;cursor:default}
-  .link{background:#12161d;color:var(--ink)}
-  .link:hover{border-color:var(--acc)}
-  .feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
-    gap:12px;margin-top:34px}
-  .feat{background:var(--panel);border:1px solid var(--line);border-radius:12px;
-    padding:16px}
-  .feat .h{color:var(--acc);font-weight:700;font-size:14px;margin-bottom:5px}
+
+  .panel{margin:30px 0;border:1px solid var(--line);border-radius:14px;
+    background:var(--bg);overflow:hidden}
+  .phead{display:flex;align-items:center;gap:9px;padding:12px 16px;
+    background:var(--soft);border-bottom:1px solid var(--line);
+    font-size:13px;color:var(--mut)}
+  .phead .dot{width:9px;height:9px;border-radius:50%;background:#cdd2d8}
+  .phead .live{margin-left:auto;display:flex;align-items:center;gap:6px;
+    color:var(--faint)}
+  .phead .live.on{color:var(--good)}
+  .phead .live i{width:7px;height:7px;border-radius:50%;
+    background:currentColor;display:inline-block}
+  .feed{padding:14px 16px;min-height:280px;max-height:62vh;overflow:auto}
+  .empty{color:var(--faint);font-size:14px;padding:24px 4px}
+
+  .step{margin:8px 0 16px}
+  .think{color:var(--mut);font-size:14px;font-style:italic;margin-bottom:6px}
+  .think::before{content:"›  ";color:var(--faint);font-style:normal}
+  .call{display:inline-flex;align-items:center;gap:7px;font-size:13px;
+    background:var(--soft);border:1px solid var(--line);border-radius:7px;
+    padding:5px 10px;color:var(--ink)}
+  .call .k{color:var(--accent)}
+  .out{margin-top:8px;border-left:2px solid var(--soft2);padding-left:14px}
+  .spin{color:var(--faint);font-size:13px}
+
+  .out h3{font-size:14px;margin:6px 0 4px}
+  .out p{font-size:14px;margin:2px 0;color:var(--ink)}
+  .out ul{margin:4px 0 4px 18px}
+  .out li{font-size:14px}
+  .tag-crit{color:var(--crit);font-weight:600}
+  .tag-warn{color:var(--warn);font-weight:600}
+  .tag-good{color:var(--good);font-weight:600}
+  table.t{border-collapse:collapse;margin:6px 0;font-size:12.5px;width:100%}
+  table.t th,table.t td{border:1px solid var(--line);padding:4px 9px;
+    text-align:left}
+  table.t th{background:var(--soft);font-weight:600;color:var(--mut)}
+  table.t td{color:var(--ink)}
+
+  .report{border:1px solid var(--line);border-radius:12px;background:var(--soft);
+    padding:18px 20px;margin-top:10px}
+  .report h3{font-size:15px;margin-bottom:8px}
+  .report ul{margin-left:18px}
+  .report li{font-size:14px;margin:3px 0}
+
+  .cta{display:flex;gap:11px;flex-wrap:wrap;align-items:center;margin-top:8px}
+  button,.link{font:inherit;font-size:14px;cursor:pointer;border-radius:9px;
+    padding:11px 20px;text-decoration:none;border:1px solid var(--line)}
+  .run{background:var(--ink);color:#fff;border-color:var(--ink);font-weight:600}
+  .run:disabled{opacity:.4;cursor:default}
+  .link{background:var(--bg);color:var(--ink)}
+  .link:hover{border-color:var(--mut)}
+  .note{color:var(--faint);font-size:12.5px;margin-top:9px}
+
+  .feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:12px;margin-top:36px}
+  .feat{border:1px solid var(--line);border-radius:12px;padding:16px;
+    background:var(--bg)}
+  .feat .h{font-weight:700;font-size:14px;margin-bottom:4px}
   .feat .d{color:var(--mut);font-size:13px}
-  footer{color:var(--mut);font-size:13px;margin-top:40px;text-align:center}
-  footer a{color:var(--blue)}
-  .note{color:var(--mut);font-size:12.5px;margin-top:8px}
+
+  footer{color:var(--faint);font-size:13px;margin-top:44px;
+    border-top:1px solid var(--line);padding-top:20px}
+  footer a{color:var(--accent);text-decoration:none}
 </style>
 </head>
 <body>
 <div class="wrap">
 
   <span class="badge">Open-source · MCP server</span>
-  <h1>The AI that audits your database<br><span class="g">like a senior data engineer.</span></h1>
+  <h1>The AI that audits your database<br><span>like a senior data engineer.</span></h1>
   <p class="sub"><b>db-detective</b> is a Model Context Protocol server. Point it at a
-  PostgreSQL or Oracle database, and any MCP-capable AI can autonomously hunt down
-  <b>stale data</b>, <b>wasted spend</b>, and <b>silent schema rot</b> — then write
-  the incident report. No dashboards. Just a connection string.</p>
+  PostgreSQL or Oracle database and any AI can autonomously hunt down <b>stale
+  data</b>, <b>wasted spend</b> and <b>silent schema rot</b> — then write the report.</p>
 
-  <div class="terminal">
-    <div class="bar">
-      <span class="dot" style="background:#f87171"></span>
-      <span class="dot" style="background:#fbbf24"></span>
-      <span class="dot" style="background:#4ade80"></span>
-      <span class="t">claude  ·  mcp: db-detective  ·  analytics_prod</span>
+  <div class="panel">
+    <div class="phead">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="mono">db-detective · investigation</span>
+      <span class="live" id="live"><i></i><span id="liveText">offline</span></span>
     </div>
-    <div class="screen" id="screen">
-      <div class="ln think">Press ▶ Run the investigation to watch the agent work.</div>
+    <div class="feed" id="feed">
+      <div class="empty">Press <b>Run the investigation</b> — the agent will query a
+      live database and show real results.</div>
     </div>
   </div>
 
   <div class="cta">
-    <button class="run" id="run">▶  Run the investigation</button>
-    <a class="link" id="repo" href="#">★  Get it on GitHub</a>
-    <a class="link" href="#install">⌘  Install in 60s</a>
+    <button class="run" id="run">Run the investigation</button>
+    <a class="link" id="repo" href="#">View source on GitHub</a>
   </div>
-  <p class="note">This page replays a real db-detective session. The agent chose each
-  step itself — the server only hands it tools.</p>
+  <p class="note" id="note">Backend not detected — start it with <span class="mono">python webdemo.py</span>. Until then this runs in offline replay mode.</p>
 
   <div class="feats">
-    <div class="feat"><div class="h">🔴 Pipeline doctor</div>
+    <div class="feat"><div class="h">Pipeline doctor</div>
       <div class="d">Finds timestamp columns and proves which tables stopped refreshing.</div></div>
-    <div class="feat"><div class="h">💸 Cost hunter</div>
+    <div class="feat"><div class="h">Cost hunter</div>
       <div class="d">Surfaces bloat, unused indexes and the slowest queries burning compute.</div></div>
-    <div class="feat"><div class="h">🗺️ SQL archaeologist</div>
+    <div class="feat"><div class="h">SQL archaeologist</div>
       <div class="d">Traces lineage and profiles every column of undocumented tables.</div></div>
-    <div class="feat"><div class="h">🔌 Postgres + Oracle</div>
-      <div class="d">One server, both engines — including Oracle Autonomous DB wallet connections.</div></div>
-  </div>
-
-  <div class="terminal" id="install" style="margin-top:34px">
-    <div class="bar"><span class="dot" style="background:#f87171"></span>
-      <span class="dot" style="background:#fbbf24"></span>
-      <span class="dot" style="background:#4ade80"></span>
-      <span class="t">install · 60 seconds</span></div>
-    <div class="screen" style="min-height:auto">
-<div class="ln res">git clone &lt;your-repo&gt;  &amp;&amp;  cd db-detective
-pip install -r requirements.txt
-cp .env.example .env        <span class="think"># add your DATABASE_URL or ORACLE_* vars</span>
-
-<span class="think"># then register it with Claude Desktop / Claude Code:</span>
-{
-  "mcpServers": {
-    "db-detective": { "command": "python", "args": ["server.py"] }
-  }
-}</div>
-    </div>
+    <div class="feat"><div class="h">Postgres + Oracle</div>
+      <div class="d">One server, both engines — including Oracle Autonomous DB wallets.</div></div>
   </div>
 
   <footer>
-    Built with the Model Context Protocol · MIT licensed ·
-    <a href="#" id="repo2">source &amp; docs on GitHub</a>
+    Built on the Model Context Protocol · MIT licensed ·
+    <a href="#" id="repo2">source &amp; docs</a>
   </footer>
 </div>
 
 <script>
-// Scripted replay of a real db-detective investigation.
-const S = [
- {c:'you', t:'You: /investigate the analytics_prod warehouse'},
- {c:'think', t:'Thinking — I should get oriented before judging anything.'},
- {c:'tool', t:'⚙ db_overview()'},
- {c:'res',  t:'Engine: postgres · PostgreSQL 15.4 · size: 84 GB · 212 tables\nLargest: events_raw 41 GB · orders 12 GB · sessions 9 GB'},
- {c:'tool', t:'⚙ list_tables(schema="public")'},
- {c:'res',  t:'fct_revenue_daily   approx_rows 0     last_analyzed 14 days ago\ndim_customer        approx_rows 480k  last_analyzed today\nevents_raw          approx_rows 220M  last_analyzed today'},
- {c:'think', t:'fct_revenue_daily has 0 rows and stale stats — a revenue table. That is a red flag. Checking freshness.'},
- {c:'tool', t:'⚙ check_freshness(table="fct_revenue_daily")'},
- {c:'res crit', t:'🔴 column "load_date": latest = 2026-05-07  (lag 14 days, 2:11:00) — STALE'},
- {c:'think', t:'Confirmed: the daily revenue model has not loaded in 14 days. What feeds it?'},
- {c:'tool', t:'⚙ trace_lineage(table="fct_revenue_daily")'},
- {c:'res',  t:'→ depends on  orders (order_id) · dim_customer (customer_id)\norders.last_updated is current → upstream is healthy → the model job itself is broken.'},
- {c:'tool', t:'⚙ find_waste()'},
- {c:'res warn', t:'🩸 events_raw — 38M dead tuples (31% bloat) → ~12 GB reclaimable by VACUUM\n🗑️ 6 unused indexes · 2.4 GB of pure write overhead'},
- {c:'tool', t:'⚙ find_slow_queries(limit=5)'},
- {c:'res warn', t:'#1  total 4,210,880 ms · 91k calls · SELECT * FROM events_raw WHERE user_id = $1\n     (no index on events_raw.user_id — full 41 GB scan per call)'},
- {c:'think', t:'I have enough. Writing the Data Health Report.'},
- {c:'rep', t:'\n━━━  DATA HEALTH REPORT · analytics_prod  ━━━'},
- {c:'crit', t:'🔴 CRITICAL\n  • fct_revenue_daily is 14 days stale. Upstream (orders) is fine —\n    the model job is failing silently. Revenue dashboards are wrong now.'},
- {c:'warn', t:'💸 COST / WASTE\n  • events_raw: 31% bloat → reclaim ~12 GB with VACUUM FULL.\n  • The #1 query scans 41 GB/call, 91k times. One index ends ~70 min/day of compute.\n  • 6 unused indexes — drop to save 2.4 GB + write speed.'},
- {c:'rep', t:'🧹 HYGIENE\n  • 14 tables never analyzed → optimizer is flying blind.'},
- {c:'good', t:'✅ ACTION LIST (priced, copy-paste ready)\n  1. Re-run the fct_revenue_daily job — investigate the silent failure.\n  2. CREATE INDEX CONCURRENTLY ix_events_user ON events_raw(user_id);\n  3. VACUUM FULL events_raw;   -- ~12 GB back\n  4. DROP 6 unused indexes.   -- 2.4 GB + faster writes'},
- {c:'rep', t:'\nInvestigation complete — 6 tool calls, 0 writes, ~30 seconds.'},
+const REPO = "https://github.com/ashishsinha1602/AshishSinha/tree/db-detective";
+document.getElementById("repo").href = REPO;
+document.getElementById("repo2").href = REPO;
+
+// The investigation plan. Each step = a thought + a real tool call.
+const PLAN = [
+  {think:"Get oriented before judging anything.", tool:"db_overview"},
+  {think:"List every table — look for anything suspiciously empty or huge.", tool:"list_tables"},
+  {think:"fct_revenue_daily looks empty. Is the revenue data stale?", tool:"check_freshness", q:"table=fct_revenue_daily"},
+  {think:"Profile a core dimension for data-quality issues.", tool:"profile_table", q:"table=dim_customer"},
+  {think:"Trace what connects to orders to understand blast radius.", tool:"trace_lineage", q:"table=orders"},
+  {think:"Hunt for quiet money leaks — bloat and unused indexes.", tool:"find_waste"},
+  {think:"Find the queries burning the most compute.", tool:"find_slow_queries", q:"limit=5"},
 ];
 
-const screen = document.getElementById('screen');
-const btn = document.getElementById('run');
-const sleep = ms => new Promise(r=>setTimeout(r,ms));
+// ---- offline fallback: real output captured from a live run -----------
+const OFFLINE = {
+ db_overview:"**Engine detected:** postgres\n**Version:** PostgreSQL 17.1\n**Database size:** 47 MB\n**Tables:** 6",
+ list_tables:"| table | approx_rows | size | last_analyzed |\n| --- | --- | --- | --- |\n| events_raw | 80000 | 37 MB | today |\n| orders | 20000 | 1512 kB | today |\n| dim_customer | 5000 | 488 kB | today |\n| fct_revenue_daily | 61 | 8192 bytes | today |",
+ check_freshness:"### Freshness: `public.fct_revenue_daily`\n- **load_date**: latest = 2026-05-07  (lag 14d) 🔴 STALE",
+ profile_table:"### Profile: `public.dim_customer`\n**Rows:** 5,000\n\n| column | type | null % | distinct≈ |\n| --- | --- | --- | --- |\n| customer_id | integer | 0.0 | 5000 |\n| email | text | 25.0 | 3750 |",
+ trace_lineage:"### Lineage: `public.orders`\n**Declared foreign keys:**\n| from_table | column | to_table |\n| --- | --- | --- |\n| orders | customer_id | dim_customer |",
+ find_waste:"**🗑️ Unused indexes (never scanned — pure write overhead):**\n| index | size |\n| --- | --- |\n| public.ix_events_payload_unused | 1288 kB |",
+ find_slow_queries:"### Slowest queries (by total time)\n| total_ms | calls | mean_ms | query |\n| --- | --- | --- | --- |\n| 2765 | 120 | 23.0 | SELECT count(*) FROM events_raw WHERE user_id = $1 |",
+};
 
-async function typeLine(node, text){
-  for(let i=0;i<text.length;i++){
-    node.textContent += text[i];
-    if(i%2===0) await sleep(text.length>120?4:9);
-  }
+const feed = document.getElementById("feed");
+const btn  = document.getElementById("run");
+const liveEl = document.getElementById("live");
+const liveText = document.getElementById("liveText");
+const note = document.getElementById("note");
+let backendUp = false;
+
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+async function probe(){
+  try{
+    const r = await fetch("/api/health", {cache:"no-store"});
+    backendUp = r.ok;
+  }catch(e){ backendUp = false; }
+  liveEl.classList.toggle("on", backendUp);
+  liveText.textContent = backendUp ? "live database" : "offline replay";
+  if(backendUp) note.textContent = "Connected to a live database via webdemo.py — every number below is a real query result.";
 }
+
+// minimal markdown renderer: headings, bold, bullets, tables
+function render(md){
+  const lines = md.split("\n");
+  let html = "", i = 0;
+  while(i < lines.length){
+    let ln = lines[i];
+    if(ln.startsWith("| ")){
+      const rows = [];
+      while(i < lines.length && lines[i].startsWith("| ")){ rows.push(lines[i]); i++; }
+      const cells = r => r.slice(1,-1).split(" | ").map(c=>c.trim());
+      const head = cells(rows[0]);
+      let t = "<table class='t'><tr>" + head.map(h=>`<th>${esc(h)}</th>`).join("") + "</tr>";
+      for(const r of rows.slice(2))
+        t += "<tr>" + cells(r).map(c=>`<td>${esc(c)}</td>`).join("") + "</tr>";
+      html += t + "</table>";
+      continue;
+    }
+    if(ln.startsWith("### ")) html += `<h3>${inline(ln.slice(4))}</h3>`;
+    else if(ln.startsWith("- "))   html += `<ul><li>${inline(ln.slice(2))}</li></ul>`;
+    else if(ln.trim() === "")      html += "";
+    else                           html += `<p>${inline(ln)}</p>`;
+    i++;
+  }
+  return html;
+}
+function esc(s){ return s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c])); }
+function inline(s){
+  s = esc(s).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>");
+  if(/🔴|STALE/.test(s)) s = `<span class="tag-crit">${s}</span>`;
+  else if(/🗑️|🩸|⚠️/.test(s)) s = `<span class="tag-warn">${s}</span>`;
+  else if(/✅/.test(s)) s = `<span class="tag-good">${s}</span>`;
+  return s;
+}
+
+async function callTool(step){
+  if(backendUp){
+    const r = await fetch(`/api/tool/${step.tool}?${step.q||""}`, {cache:"no-store"});
+    return (await r.json()).output;
+  }
+  await sleep(500);
+  return OFFLINE[step.tool] || "_(no data)_";
+}
+
+function synth(outputs){
+  const findings = [];
+  for(const o of outputs){
+    for(const ln of o.split("\n")){
+      if(/🔴|STALE/.test(ln)) findings.push(["crit", ln.replace(/^- /,"")]);
+      else if(/Unused indexes/i.test(ln)) findings.push(["warn","Unused indexes detected — pure write overhead, safe to drop."]);
+    }
+    const m = o.match(/\|\s*(\d{3,})\s*\|\s*(\d+)\s*\|[^|]*\|\s*(SELECT[^|]+)\|/i);
+    if(m) findings.push(["warn",`Slow query: ${m[1]} ms over ${m[2]} calls — ${m[3].trim()}`]);
+  }
+  return findings;
+}
+
 async function run(){
-  btn.disabled = true; screen.innerHTML = '';
-  for(const s of S){
-    const el = document.createElement('div');
-    el.className = 'ln ' + s.c;
-    screen.appendChild(el);
-    const cur = document.createElement('span');
-    cur.className='cursor'; el.appendChild(cur);
-    await typeLine(el, s.t);
-    el.removeChild(cur);
-    screen.scrollTop = screen.scrollHeight;
-    await sleep(s.c==='tool'?420:s.c==='res'||s.c.startsWith('res')?260:520);
+  btn.disabled = true; feed.innerHTML = ""; const outputs = [];
+  for(const step of PLAN){
+    const box = document.createElement("div");
+    box.className = "step";
+    box.innerHTML = `<div class="think">${esc(step.think)}</div>
+      <span class="call"><span class="k">⚙</span>${step.tool}(${step.q?esc(step.q):""})</span>
+      <div class="out"><span class="spin">querying…</span></div>`;
+    feed.appendChild(box);
+    feed.scrollTop = feed.scrollHeight;
+    await sleep(400);
+    const out = await callTool(step);
+    outputs.push(out);
+    box.querySelector(".out").innerHTML = render(out);
+    feed.scrollTop = feed.scrollHeight;
+    await sleep(350);
   }
-  btn.disabled = false; btn.textContent = '▶  Replay';
+  const findings = synth(outputs);
+  const rep = document.createElement("div");
+  rep.className = "report";
+  rep.innerHTML = "<h3>🔎 Data Health Report</h3><ul>" +
+    (findings.length
+      ? findings.map(([c,t])=>`<li class="tag-${c}">${esc(t)}</li>`).join("")
+      : "<li>No critical issues found.</li>") +
+    "</ul>";
+  feed.appendChild(rep);
+  feed.scrollTop = feed.scrollHeight;
+  btn.disabled = false; btn.textContent = "Run again";
 }
-btn.addEventListener('click', run);
 
-// Point the GitHub links wherever you publish. Edit this one line.
-const REPO = 'https://github.com/your-username/db-detective';
-['repo','repo2'].forEach(id=>document.getElementById(id).href = REPO);
+probe();
+btn.addEventListener("click", run);
 </script>
 </body>
 </html>
