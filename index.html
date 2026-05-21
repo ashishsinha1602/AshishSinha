@@ -237,8 +237,7 @@
 
   <header>
     <span class="badge rise d1"><span class="pip"></span>Open-source · Model Context Protocol</span>
-    <h1 class="rise d2">The AI that audits your database<br>
-      like a <span class="accent">senior data engineer.</span></h1>
+    <h1 class="rise d2">The AI that <span class="accent">audits your database.</span></h1>
     <p class="sub rise d3"><b>db-detective</b> is an MCP server. Point it at a
       PostgreSQL or Oracle database and any AI can autonomously hunt down
       <b>stale data</b>, <b>wasted spend</b> and <b>silent schema rot</b> — then
@@ -592,7 +591,8 @@ async function runSteps(steps, title, reporter){
 
 const run = () => runSteps(PLAN, "Full autonomous investigation", fullReport);
 
-probe();
+// auto-start the investigation on load, once the backend probe finishes
+probe().then(() => setTimeout(run, 900));
 btn.addEventListener("click", run);
 
 // make the four capability boxes clickable — each runs its own investigation
