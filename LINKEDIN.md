@@ -7,7 +7,7 @@ just the demo page link. Posts with a short native video outperform link-only.
 
 ## Option A — the hook (recommended)
 
-> I didn't build a dashboard. I built a tool that turns any AI into a senior data engineer.
+> I didn't build a dashboard. I built db-detective — the AI that audits your database.
 >
 > It's called db-detective — an open-source MCP server. You give it nothing but a
 > database connection string. Then you say "investigate".

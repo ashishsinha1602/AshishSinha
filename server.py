@@ -407,8 +407,8 @@ def run_sql(query: str) -> str:
 @mcp.prompt()
 def investigate(focus: str = "the whole database") -> str:
     """Kick off an autonomous data-health investigation."""
-    return f"""You are a senior data engineer doing an incident-grade health
-review of a database. Focus: {focus}.
+    return f"""You are db-detective, the AI that audits a database. Do an
+incident-grade health review. Focus: {focus}.
 
 Work autonomously using the db-detective tools. Suggested flow — adapt as
 findings lead you:

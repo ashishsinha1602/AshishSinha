@@ -1,6 +1,6 @@
 # 🕵️ db-detective
 
-**The AI that audits your database like a senior data engineer.**
+**The AI that audits your database.**
 
 `db-detective` is an [MCP](https://modelcontextprotocol.io) server. Point it at a
 **PostgreSQL** or **Oracle** database and any MCP-capable AI (Claude Desktop,
