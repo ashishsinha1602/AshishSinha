@@ -168,7 +168,9 @@ const PLAN = [
 const OFFLINE = {
  db_overview:"**Engine detected:** postgres\n**Version:** PostgreSQL 17.1\n**Database size:** 47 MB\n**Tables:** 6",
  list_tables:"| table | approx_rows | size | last_analyzed |\n| --- | --- | --- | --- |\n| events_raw | 80000 | 37 MB | today |\n| orders | 20000 | 1512 kB | today |\n| dim_customer | 5000 | 488 kB | today |\n| fct_revenue_daily | 61 | 8192 bytes | today |",
- check_freshness:"### Freshness: `public.fct_revenue_daily`\n- **load_date**: latest = 2026-05-07  (lag 14d) 🔴 STALE",
+ check_freshness:(q)=> (q && q.indexOf("orders")>-1)
+   ? "### Freshness: `public.orders`\n- **last_updated**: latest = 1 minute ago  (lag 0d) ✅"
+   : "### Freshness: `public.fct_revenue_daily`\n- **load_date**: latest = 2026-05-07  (lag 14d) 🔴 STALE",
  profile_table:"### Profile: `public.dim_customer`\n**Rows:** 5,000\n\n| column | type | null % | distinct≈ |\n| --- | --- | --- | --- |\n| customer_id | integer | 0.0 | 5000 |\n| email | text | 25.0 | 3750 |",
  trace_lineage:"### Lineage: `public.orders`\n**Declared foreign keys:**\n| from_table | column | to_table |\n| --- | --- | --- |\n| orders | customer_id | dim_customer |",
  find_waste:"**🗑️ Unused indexes (never scanned — pure write overhead):**\n| index | size |\n| --- | --- |\n| public.ix_events_payload_unused | 1288 kB |",
@@ -234,33 +236,126 @@ async function callTool(step){
     return (await r.json()).output;
   }
   await sleep(500);
-  return OFFLINE[step.tool] || "_(no data)_";
+  const v = OFFLINE[step.tool];
+  return (typeof v === "function" ? v(step.q) : v) || "_(no data)_";
 }
 
-function synth(outputs){
-  const findings = [];
+// ---- helpers for building verdicts from real tool output ---------------
+const allLines = o => o.join("\n").split("\n");
+const clean = s => s.replace(/[*`]/g,"").replace(/^[-\s]+/,"").trim();
+function firstSlow(outputs){
+  for(const o of outputs){
+    const m = o.match(/\|\s*(\d{3,})\s*\|\s*(\d+)\s*\|[^|]*\|\s*(SELECT[^|]+)\|/i);
+    if(m) return {ms:m[1], calls:m[2], sql:m[3].trim()};
+  }
+  return null;
+}
+
+// each clickable capability is a DISTINCT investigation with its own verdict
+const KITS = {
+  pipeline: {
+    title:"Pipeline doctor — has any table stopped refreshing?",
+    steps:[
+      {think:"Check the revenue model's load timestamp.",
+       tool:"check_freshness", q:"table=fct_revenue_daily"},
+      {think:"Compare with an upstream table that should be live.",
+       tool:"check_freshness", q:"table=orders"},
+    ],
+    report(o){
+      const ls = allLines(o);
+      const stale = ls.filter(l => /STALE/.test(l));
+      const fresh = ls.filter(l => /✅/.test(l));
+      const lines = [];
+      stale.forEach(l => lines.push(["crit", "STALE — " + clean(l)]));
+      fresh.forEach(l => lines.push(["good", "Fresh — " + clean(l)]));
+      if(stale.length && fresh.length)
+        lines.push(["crit", "Diagnosis: the stale table's upstream is current — "
+          + "so the model job is broken, not the source data."]);
+      if(!lines.length) lines.push(["good","All checked tables are fresh."]);
+      return {head:"🔴 Freshness verdict", lines};
+    },
+  },
+  cost: {
+    title:"Cost hunter — where is compute and storage being wasted?",
+    steps:[
+      {think:"Look for table bloat and indexes nobody uses.", tool:"find_waste"},
+      {think:"Find the queries burning the most execution time.",
+       tool:"find_slow_queries", q:"limit=5"},
+    ],
+    report(o){
+      const idx = allLines(o).filter(l => /^\|\s*public\./.test(l) && /kB|MB/.test(l));
+      const slow = firstSlow(o);
+      const lines = [];
+      if(idx.length) lines.push(["warn",
+        idx.length + " unused index(es) — pure write overhead, safe to drop."]);
+      if(slow) lines.push(["warn",
+        `Heaviest query: ${slow.ms} ms across ${slow.calls} calls — ${slow.sql}`]);
+      if(slow) lines.push(["good",
+        "Fix: a single index on the filtered column ends most of that cost."]);
+      if(!lines.length) lines.push(["good","No significant waste in this scan."]);
+      return {head:"💸 Cost verdict", lines};
+    },
+  },
+  archaeology: {
+    title:"SQL archaeologist — what is this undocumented schema?",
+    steps:[
+      {think:"Profile a core table for data-quality issues.",
+       tool:"profile_table", q:"table=dim_customer"},
+      {think:"Trace what joins to orders to map the schema.",
+       tool:"trace_lineage", q:"table=orders"},
+    ],
+    report(o){
+      const lines = [];
+      allLines(o).forEach(l => {
+        const m = l.match(/\|\s*([a-z_]+)\s*\|[^|]+\|\s*([1-9][0-9]?(?:\.\d)?)\s*\|/i);
+        if(m && parseFloat(m[2]) >= 10)
+          lines.push(["warn", `Column "${m[1]}" is ${m[2]}% NULL — a data-quality gap.`]);
+      });
+      if(o.join("").includes("Declared foreign keys"))
+        lines.push(["good","Lineage mapped — foreign keys traced to connected tables."]);
+      if(!lines.length) lines.push(["good","Schema profiled — no major gaps found."]);
+      return {head:"🗺️ Schema findings", lines};
+    },
+  },
+  engine: {
+    title:"Engine check — what database are we connected to?",
+    steps:[
+      {think:"Identify the engine, version and total size.", tool:"db_overview"},
+      {think:"Count and rank every table by size.", tool:"list_tables"},
+    ],
+    report(o){
+      const txt = o.join("\n");
+      const g = (re) => (txt.match(re) || [])[1] || "—";
+      return {head:"🔌 Connection summary", lines:[
+        ["good", `Engine: ${g(/Engine detected:\*\* (\w+)/).toUpperCase()} · `
+          + g(/Version:\*\* ([^\n]+)/)],
+        ["good", `${g(/Tables:\*\* (\d+)/)} tables · `
+          + `${g(/[Ss]ize:\*\* ([^\n]+)/)} on disk`],
+        ["good", "Same toolkit speaks PostgreSQL and Oracle — engine auto-detected."],
+      ]};
+    },
+  },
+};
+
+function fullReport(outputs){
+  const lines = [];
   for(const o of outputs){
     for(const ln of o.split("\n")){
-      if(/🔴|STALE/.test(ln)) findings.push(["crit", ln.replace(/^- /,"")]);
-      else if(/Unused indexes/i.test(ln)) findings.push(["warn","Unused indexes detected — pure write overhead, safe to drop."]);
+      if(/🔴|STALE/.test(ln)) lines.push(["crit", clean(ln)]);
+      else if(/Unused indexes/i.test(ln))
+        lines.push(["warn","Unused indexes detected — safe to drop."]);
     }
-    const m = o.match(/\|\s*(\d{3,})\s*\|\s*(\d+)\s*\|[^|]*\|\s*(SELECT[^|]+)\|/i);
-    if(m) findings.push(["warn",`Slow query: ${m[1]} ms over ${m[2]} calls — ${m[3].trim()}`]);
   }
-  return findings;
+  const slow = firstSlow(outputs);
+  if(slow) lines.push(["warn",
+    `Slow query: ${slow.ms} ms over ${slow.calls} calls — ${slow.sql}`]);
+  if(!lines.length) lines.push(["good","No critical issues found."]);
+  return {head:"🔎 Data Health Report", lines};
 }
-
-// each clickable capability runs a focused subset of the full plan
-const KITS = {
-  pipeline:    {title:"Pipeline doctor — is the data fresh?",      steps:[PLAN[0],PLAN[2]]},
-  cost:        {title:"Cost hunter — where is money leaking?",     steps:[PLAN[5],PLAN[6]]},
-  archaeology: {title:"SQL archaeologist — what is this schema?",   steps:[PLAN[3],PLAN[4]]},
-  engine:      {title:"Engine check — what are we connected to?",  steps:[PLAN[0],PLAN[1]]},
-};
 
 let running = false;
 
-async function runSteps(steps, title){
+async function runSteps(steps, title, reporter){
   if(running) return;
   running = true; btn.disabled = true; feed.innerHTML = "";
   if(title){
@@ -284,31 +379,29 @@ async function runSteps(steps, title){
     feed.scrollTop = feed.scrollHeight;
     await sleep(350);
   }
-  const findings = synth(outputs);
+  const {head, lines} = reporter(outputs);
   const rep = document.createElement("div");
   rep.className = "report";
-  rep.innerHTML = "<h3>🔎 Data Health Report</h3><ul>" +
-    (findings.length
-      ? findings.map(([c,t])=>`<li class="tag-${c}">${esc(t)}</li>`).join("")
-      : "<li>No critical issues found in this scan.</li>") +
-    "</ul>";
+  rep.innerHTML = `<h3>${esc(head)}</h3><ul>`
+    + lines.map(([c,t]) => `<li class="tag-${c}">${esc(t)}</li>`).join("")
+    + "</ul>";
   feed.appendChild(rep);
   feed.scrollTop = feed.scrollHeight;
   running = false; btn.disabled = false; btn.textContent = "Run again";
 }
 
-const run = () => runSteps(PLAN, "Full autonomous investigation");
+const run = () => runSteps(PLAN, "Full autonomous investigation", fullReport);
 
 probe();
 btn.addEventListener("click", run);
 
-// make the four capability boxes clickable
+// make the four capability boxes clickable — each runs its own investigation
 document.querySelectorAll(".feat").forEach(card => {
   card.addEventListener("click", () => {
     const kit = KITS[card.dataset.kit];
     if(!kit) return;
     document.querySelector(".panel").scrollIntoView({behavior:"smooth", block:"start"});
-    runSteps(kit.steps, kit.title);
+    runSteps(kit.steps, kit.title, kit.report);
   });
 });
 </script>
